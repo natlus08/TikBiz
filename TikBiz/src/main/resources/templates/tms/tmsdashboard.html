@@ -1,0 +1,111 @@
+<div class="generic-container" ng-init="tmscontroller.prepareDashboard()">
+		    <div class="panel panel-default">
+		    	<div class="panel-heading">
+		    		<span class="lead">Welcome {{tmscontroller.user.lastName | uppercase}}, {{tmscontroller.user.firstName | uppercase}}!</span>
+		    		<div class="form-actions floatRight">
+	                	<a ng-href="#" ng-click="tmscontroller.logout()" class="btn btn-primary">Logout</a>
+					</div>
+		    	</div>
+		        <!-- Default panel contents -->
+		        <div class="panel-heading"><span class="lead">Ticket Management System</span></div>
+				<div class="panel-body">
+			        <div class="formcontainer">
+			            <div class="alert alert-success" role="alert" ng-if="controller.successMessage">{{tmscontroller.successMessage}}</div>
+			            <div class="alert alert-danger" role="alert" ng-if="tmscontroller.errorMessage">{{tmscontroller.errorMessage}}</div>
+			            <form ng-submit="tmscontroller.submitTicketForm()" name="ticketForm" class="form-horizontal" novalidate autocomplete="off">
+			            	<!-- error messages -->
+			            	<div class="alert alert-danger" role="alert" ng-show="tmscontroller.validateTicketForm && ticketForm.$invalid">
+    							<h4>ERROR</h4> 
+                                <ul>
+                                	<li ng-show="ticketForm.desc.$error.required">Description is required</li>
+	    							<li ng-show="ticketForm.status.$error.required">Please select a Status</li>
+	    							<li ng-show="ticketForm.priority.$error.required">Please select a Priority</li>		
+                                </ul>
+  							</div>
+  							
+			                <input type="hidden" ng-model="tmscontroller.ticket.id"></input>
+			                <input type="hidden" ng-if="!tmscontroller.ticket.id" ng-model="tmscontroller.ticket.createdBy" ng-bind="tmscontroller.ticket.createdBy = tmscontroller.user.userName"></input>
+			                <input type="hidden" ng-if="tmscontroller.ticket.id" ng-model="tmscontroller.ticket.modifiedBy" ng-bind="tmscontroller.ticket.modifiedBy = tmscontroller.user.userName"></input>
+			                <div class="row">
+			                    <div class="form-group col-md-12">
+			                        <label class="col-md-2 control-lable" for="desc">Description<span style="color:red">*</span></label>
+			                        <div class="col-md-7">
+			                            <input type="text" ng-model="tmscontroller.ticket.description" name="desc" id="desc" class="form-control input-sm" placeholder="Describe your problem" required></input>
+			                        </div>
+			                    </div>
+			                </div>
+			                			
+			                <div class="row">
+			                    <div class="form-group col-md-12">
+			                        <label class="col-md-2 control-lable" for="status">Status<span style="color:red">*</span></label>
+			                        <div class="col-md-7">
+										 <select name="status" id="status" class="form-control input-sm" ng-model="tmscontroller.ticket.status" required>
+										 	<option value="">---Please select a status---</option>
+     										<option value="NEW">New</option>
+      										<option value="INPROGRESS">In Progress</option>
+      										<option value="CLOSED">Closed</option>
+    									</select>
+			                        </div>
+			                    </div>
+			                </div>
+							
+							<div class="row">
+			                    <div class="form-group col-md-12">
+			                        <label class="col-md-2 control-lable" for="priority">Priority<span style="color:red">*</span></label>
+			                        <div class="col-md-7">
+										 <select name="priority" id="priority" class="form-control input-sm" ng-model="tmscontroller.ticket.priority" required>
+										 	<option value="">---Please select a priority---</option>
+     										<option value="P1">Level 1</option>
+      										<option value="P2">Level 2</option>
+      										<option value="P3">Level 3</option>
+											<option value="P4">Level 4</option>
+    									</select>
+			                        </div>
+			                    </div>
+			                </div>
+		
+			                <div class="row">
+			                    <div class="form-actions floatRight">
+			                        <input type="submit"  value="{{!tmscontroller.ticket.id ? 'Create' : 'Update'}}" class="btn btn-primary btn-sm"></input>
+			                        <button type="button" ng-click="tmscontroller.reset()" class="btn btn-warning btn-sm" ng-disabled="ticketForm.$pristine">Reset</button>
+			                    </div>
+			                </div>
+			            </form>
+		    	    </div>
+				</div>	
+		    </div>
+		    <div class="panel panel-default">
+		        <div class="panel-heading"><span class="lead">List of Tickets</span></div>
+				<div class="panel-body">
+					<div class="table-responsive">
+				        <table class="table table-hover">
+				            <thead>
+				            <tr>
+				                <th>ID</th>
+				                <th>DESCRIPTION</th>
+				                <th>STATUS</th>
+				                <th>PRIORITY</th>
+				                <th>CREATED BY</th>
+				                <th>MODIFIED BY</th>
+				                <th>CREATED DATE</th>
+				                <th width="100"></th>
+				            </tr>
+				            </thead>
+				            <tbody>
+				            <tr ng-repeat="u in tmscontroller.getAllTickets() | orderBy:'id'">
+				                <td>{{u.id}}</td>
+				                <td>{{u.description}}</td>
+				                <td>{{u.status}}</td>
+				                <td>{{u.priority}}</td>
+				                <td>{{u.createdBy}}</td>
+				                <td><span ng-if="u.modifiedBy">{{u.modifiedBy}}</span><span ng-if="!u.modifiedBy">NA</span></td>
+				                <td>{{u.createdDate  | date : 'MM/dd/yyyy'}}</td>
+				                <td><button type="button" ng-click="tmscontroller.editTicket(u.id)" class="btn btn-success custom-width">Edit</button></td>
+				            </tr>
+				            </tbody>
+				        </table>		
+					</div>
+				</div>
+		    </div>
+		</div>
+    

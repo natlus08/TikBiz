@@ -1,0 +1,156 @@
+<div class="consoledashboard" ng-init="consolecontroller.prepareDashboard()">
+	<div class="panel-heading">
+   		<span class="lead">Welcome {{consolecontroller.user.lastName | uppercase}}, {{consolecontroller.user.firstName | uppercase}}!</span>
+   		<div class="form-actions floatRight">
+              	<a ng-href="#" ng-click="consolecontroller.logout()" class="btn btn-primary">Logout</a>
+		</div>
+	</div>
+	<div class="col-md-2">
+		<ul class="nav nav-pills nav-stacked">
+	    	<li ng-class="{ active: isSet(1) }">
+	       	<a href ng-click="consolecontroller.setTab(1)">Dashboard</a>
+	    	</li>
+	    	<li ng-class="{ active: isSet(2) }">
+	       	<a href ng-click="consolecontroller.setTab(2)">Shift Roaster</a>
+	    	</li>
+	  	</ul>
+	</div>
+	<div class="col-md-8">
+		<div class="jumbotron">
+		   	<div ng-show="consolecontroller.isSet(1)">
+		     	<h1>Dashboard</h1>
+		     	<div class="panel panel-default">
+			        <div class="panel-heading"><span class="lead">Tickets Summary</span></div>
+					<div class="panel-body">
+						<div class="table-responsive">
+					        <table class="table table-hover">
+					            <thead>
+						            <tr>
+						                <th>Type</th>
+						                <th>Total No. of Tickets</th>
+						                <th>Tickets in progress</th>
+						                <th>Pending tickets</th>
+						                <th>Closed tickets</th>
+						            </tr>
+					            </thead>
+					            <tbody>
+						            <tr>
+						                <td>Morning Shift</td>
+						                <td>{{(consolecontroller.tickets | shiftfilter:'morning').length}}</td>
+						                <td>{{(consolecontroller.tickets | shiftfilterwithstatus:'morning':'INPROGRESS').length}}</td>
+						                <td>{{(consolecontroller.tickets | shiftfilterwithstatus:'morning':'NEW').length}}</td>
+						                <td>{{(consolecontroller.tickets | shiftfilterwithstatus:'morning':'CLOSED').length}}</td>
+						            </tr>
+						            <tr>
+						                <td>Afternoon Shift</td>
+						                <td>{{(consolecontroller.tickets | shiftfilter:'noon').length}}</td>
+						                <td>{{(consolecontroller.tickets | shiftfilterwithstatus:'noon':'INPROGRESS').length}}</td>
+						                <td>{{(consolecontroller.tickets | shiftfilterwithstatus:'noon':'NEW').length}}</td>
+						                <td>{{(consolecontroller.tickets | shiftfilterwithstatus:'noon':'CLOSED').length}}</td>
+						            </tr>
+						            <tr>
+						                <td>Night Shift</td>
+						                <td>{{(consolecontroller.tickets | shiftfilter:'night').length}}</td>
+						                <td>{{(consolecontroller.tickets | shiftfilterwithstatus:'night':'INPROGRESS').length}}</td>
+						                <td>{{(consolecontroller.tickets | shiftfilterwithstatus:'night':'NEW').length}}</td>
+						                <td>{{(consolecontroller.tickets | shiftfilterwithstatus:'night':'CLOSED').length}}</td>
+						            </tr>
+						            <tr>
+						                <td>Today</td>
+						                <td>{{(consolecontroller.tickets | datefilter).length}}</td>
+						                <td>{{(consolecontroller.tickets | datefilterwithstatus:'INPROGRESS').length}}</td>
+						                <td>{{(consolecontroller.tickets | datefilterwithstatus:'NEW').length}}</td>
+						                <td>{{(consolecontroller.tickets | datefilterwithstatus:'CLOSED').length}}</td>
+						            </tr>
+						            <tr>
+						                <td class="strong">Overall</td>
+						                <td class="strong">{{consolecontroller.tickets.length}}</td>
+						                <td class="strong">{{(consolecontroller.tickets | filter: {status:'INPROGRESS'}).length}}</td>
+						                <td class="strong">{{(consolecontroller.tickets | filter: {status:'NEW'}).length}}</td>
+						                <td class="strong">{{(consolecontroller.tickets | filter: {status:'CLOSED'}).length}}</td>
+						            </tr>
+					            </tbody>
+					        </table>		
+						</div>
+					</div>
+		   	 	</div>
+		   	</div>
+			<div ng-show="consolecontroller.isSet(2)">
+		        <h1>Shift Roaster</h1>
+		        <div class="panel panel-default">
+			        <div class="panel-heading"><span class="lead">Shift Details</span></div>
+					<div class="panel-body">
+						<div class="table-responsive">
+					        <table class="table table-hover">
+					            <thead>
+						            <tr>
+						                <th>Associates</th>
+						                <th>Mon 07/31</th>
+						                <th>Tue 08/01</th>
+						                <th>Wed 08/02</th>
+						                <th>Thu 08/03</th>
+						                <th>Fri 08/04</th>
+						                <th>Sat 08/05</th>
+						                <th>Sun 08/06</th>
+						            </tr>
+					            </thead>
+					            <tbody>
+						            <tr>
+						                <td>Hameedu</td>
+						                <td>-</td>
+						                <td>-</td>
+						                <td>6AM-2PM</td>
+						                <td>2PM-10PM</td>
+						                <td>10PM-6AM</td>
+						                <td>6AM-2PM</td>
+						                <td>2PM-10PM</td>
+						            </tr>
+						            <tr>
+						                <td>Ravi</td>
+						                <td>6AM-2PM</td>
+						                <td>2PM-10PM</td>
+						                <td>-</td>
+						                <td>-</td>
+						                <td>10PM-6AM</td>
+						                <td>6AM-2PM</td>
+						                <td>2PM-10PM</td>
+						            </tr>
+						            <tr>
+						                <td>Santosh</td>
+						                <td>6AM-2PM</td>
+						                <td>2PM-10PM</td>
+						                <td>10PM-6AM</td>
+						                <td>6AM-2PM</td>
+						                <td>-</td>
+						                <td>-</td>
+						                <td>2PM-10PM</td>
+						            </tr>
+						            <tr>
+						                <td>Vinoth</td>
+						                <td>-</td>
+						                <td>6AM-2PM</td>
+						                <td>2PM-10PM</td>
+						                <td>10PM-6AM</td>
+						                <td>6AM-2PM</td>
+						                <td>2PM-10PM</td>
+						                <td>-</td>
+						            </tr>
+						            <tr>
+						                <td>Murali</td>
+						                <td>6AM-2PM</td>
+						                <td>-</td>
+						                <td>-</td>
+						                <td>2PM-10PM</td>
+						                <td>10PM-6AM</td>
+						                <td>6AM-2PM</td>
+						                <td>2PM-10PM</td>
+						            </tr>
+					            </tbody>
+					        </table>		
+						</div>
+					</div>
+		   	 	</div>
+		   	</div>
+		</div>
+	</div>
+</div>

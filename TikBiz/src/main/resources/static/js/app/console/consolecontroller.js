@@ -6,6 +6,7 @@ angular.module('consoleapp').controller('consolecontroller',
         var self = this;
         self.user = {};
         self.tickets = [];
+        self.shifts = [];
         self.login = login;
         self.goToLogin = goToLogin;
         self.register = register;
@@ -15,6 +16,7 @@ angular.module('consoleapp').controller('consolecontroller',
         self.getMessage = getMessage;
         self.getAllTickets = getAllTickets;
         self.reset = reset;
+        self.getShifts = getShifts;
 
         self.successMessage = '';
         self.errorMessage = '';
@@ -70,6 +72,9 @@ angular.module('consoleapp').controller('consolecontroller',
         	self.user = consoleservice.getUser();
         	consoleservice.loadAllTickets();
         	self.tickets = getAllTickets();
+        	
+        	consoleservice.getShifts('2017-07-31');
+        	self.shifts = getShifts();
         }
         
         function getMessage(){
@@ -105,6 +110,10 @@ angular.module('consoleapp').controller('consolecontroller',
         	if(today===createdDate){
         		return true;
         	}
+        }
+        
+        function getShifts(){
+            return consoleservice.loadShifts();
         }
     }
 ]);

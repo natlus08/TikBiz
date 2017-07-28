@@ -12,6 +12,6 @@ import com.tikbiz.exception.TikBizException;
  */
 public interface ShiftService {
 
-	Map<String, Map<Date, String>> shiftRoaster(Date date) throws TikBizException;
+	Map<String, Map<Date, String>> getShifts(Date date) throws TikBizException;
 	
 }

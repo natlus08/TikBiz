@@ -12,6 +12,8 @@ angular.module('consoleapp').factory('consoleservice',
                 resetMessage: resetMessage,
                 loadAllTickets: loadAllTickets,
                 getAllTickets: getAllTickets,
+                getShifts: getShifts,
+                loadShifts: loadShifts
             };
 
             return factory;
@@ -75,6 +77,25 @@ angular.module('consoleapp').factory('consoleservice',
             
             function getAllTickets(){
                 return $localStorage.tickets;
+            }
+            
+            function getShifts(date) {
+                var deferred = $q.defer();
+                $http.get(urls.API+'getshifts/'+date)
+                    .then(
+                        function (response) {
+                        	$localStorage.shifts = response.data;
+                            deferred.resolve(response);
+                        },
+                        function (errResponse) {
+                            deferred.reject(errResponse);
+                        }
+                    );
+                return deferred.promise;
+            }
+            
+            function loadShifts(){
+                return $localStorage.shifts;
             }
         }
     ]);

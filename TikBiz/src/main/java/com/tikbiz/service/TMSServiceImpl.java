@@ -27,8 +27,6 @@ public class TMSServiceImpl implements TMSService{
 	@Override
 	public TMSUser login(TMSUser user) throws TikBizException{
 		
-		shiftService.shiftRoaster(new Date());
-		
 		TMSUser validatedUser = tmsUserRepository.findByUserNameAndPassword(user.getUserName(), user.getPassword());
 		if(null == validatedUser){
 			throw new TikBizException("User not found");

@@ -1,5 +1,6 @@
 package com.tikbiz.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +20,18 @@ public class TMSServiceImpl implements TMSService{
 	
 	@Autowired
 	private TMSTicketRepository tmsTicketRepository;
+	
+	@Autowired
+	private ShiftService shiftService;
 
 	@Override
 	public TMSUser login(TMSUser user) throws TikBizException{
+		
+		shiftService.shiftRoaster(new Date());
+		
 		TMSUser validatedUser = tmsUserRepository.findByUserNameAndPassword(user.getUserName(), user.getPassword());
 		if(null == validatedUser){
 			throw new TikBizException("User not found");
-//			validatedUser = new TMSUser(new Long(123456789),"hameedu","sultan","kaderh","123456");
 		}
 		return validatedUser;
 	}

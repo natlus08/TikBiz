@@ -27,19 +27,29 @@ public class TMSUser implements Serializable{
 	
 	@PersistenceConstructor
 	public TMSUser(Long id, String firstName, String lastName, String userName,
-			String password) {
+			String password, String role, String mobileNumber) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.userName = userName;
 		this.password = password;
+		this.role = role;
+		this.mobileNumber = mobileNumber;
 	}
 
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private Long id;
 	
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
 	@Column(name="FIRST_NAME", nullable=false)
 	private String firstName;
 	
@@ -53,6 +63,20 @@ public class TMSUser implements Serializable{
 	@Column(name="PASSWORD", nullable=false)
 	private String password;
 	
+	@Column(name="ROLE", nullable=false)
+	private String role;
+	
+	@Column(name="MOBILENUMBER", nullable=true)
+	private String mobileNumber;
+	
+	public String getMobileNumber() {
+		return mobileNumber;
+	}
+
+	public void setMobileNumber(String mobileNumber) {
+		this.mobileNumber = mobileNumber;
+	}
+
 	@Transient
 	private String errorMessage;
 

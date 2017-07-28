@@ -95,66 +95,10 @@
 						            </tr>
 					            </thead>
 					            <tbody>
-					            	<tr ng-repeat="(name, shiftdetail) in consolecontroller.getShifts()">
-						                <td>{{name}} - Dynamic</td>
-						                <td>-</td>
-						                <td>-</td>
-						                <td>6AM-2PM</td>
-						                <td>2PM-10PM</td>
-						                <td>10PM-6AM</td>
-						                <td>6AM-2PM</td>
-						                <td>2PM-10PM</td>
-						            </tr>
-						            <tr>
-						                <td>Hameedu</td>
-						                <td>-</td>
-						                <td>-</td>
-						                <td>6AM-2PM</td>
-						                <td>2PM-10PM</td>
-						                <td>10PM-6AM</td>
-						                <td>6AM-2PM</td>
-						                <td>2PM-10PM</td>
-						            </tr>
-						            <tr>
-						                <td>Ravi</td>
-						                <td>6AM-2PM</td>
-						                <td>2PM-10PM</td>
-						                <td>-</td>
-						                <td>-</td>
-						                <td>10PM-6AM</td>
-						                <td>6AM-2PM</td>
-						                <td>2PM-10PM</td>
-						            </tr>
-						            <tr>
-						                <td>Santosh</td>
-						                <td>6AM-2PM</td>
-						                <td>2PM-10PM</td>
-						                <td>10PM-6AM</td>
-						                <td>6AM-2PM</td>
-						                <td>-</td>
-						                <td>-</td>
-						                <td>2PM-10PM</td>
-						            </tr>
-						            <tr>
-						                <td>Vinoth</td>
-						                <td>-</td>
-						                <td>6AM-2PM</td>
-						                <td>2PM-10PM</td>
-						                <td>10PM-6AM</td>
-						                <td>6AM-2PM</td>
-						                <td>2PM-10PM</td>
-						                <td>-</td>
-						            </tr>
-						            <tr>
-						                <td>Murali</td>
-						                <td>6AM-2PM</td>
-						                <td>-</td>
-						                <td>-</td>
-						                <td>2PM-10PM</td>
-						                <td>10PM-6AM</td>
-						                <td>6AM-2PM</td>
-						                <td>2PM-10PM</td>
-						            </tr>
+						            <tr ng-repeat="(name, shiftdetail) in consolecontroller.getShifts()">
+								        <td>{{name | uppercase}}</td>
+								        <td ng-repeat="(date, shift) in shiftdetail">{{shift}}</td>
+								    </tr>
 					            </tbody>
 					        </table>		
 						</div>

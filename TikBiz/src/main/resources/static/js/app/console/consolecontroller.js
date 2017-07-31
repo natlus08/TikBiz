@@ -17,13 +17,24 @@ angular.module('consoleapp').controller('consolecontroller',
         self.getAllTickets = getAllTickets;
         self.reset = reset;
         self.getShifts = getShifts;
-
+        self.nextWeek = nextWeek;
+        self.previousWeek = previousWeek;
+        
         self.successMessage = '';
         self.errorMessage = '';
         
         self.validateTicketForm = false;
         
         self.today = $filter('date')(new Date(),'MM/dd/yyyy');
+        
+        var activeWeek;
+        
+        function getMonday(date) {
+    	  var day = date.getDay();
+    	  var diff = date.getDate() - day + (day == 0 ? -6:1); // adjust when day is sunday
+    	  activeWeek = new Date(date.setDate(diff))
+    	  return activeWeek;
+        }
         
         function login() {
         	consoleservice.login(self.user)
@@ -73,7 +84,7 @@ angular.module('consoleapp').controller('consolecontroller',
         	consoleservice.loadAllTickets();
         	self.tickets = getAllTickets();
         	
-        	consoleservice.getShifts('2017-07-31');
+        	consoleservice.getShifts($filter('date')(getMonday(new Date()),'yyyy-MM-dd'));
         	self.shifts = getShifts();
         }
         
@@ -114,6 +125,18 @@ angular.module('consoleapp').controller('consolecontroller',
         
         function getShifts(){
             return consoleservice.loadShifts();
+        }
+        
+        function nextWeek(){
+        	activeWeek = new Date(activeWeek.getTime()+(7*24*60*60*1000))
+        	consoleservice.getShifts($filter('date')(getMonday(activeWeek),'yyyy-MM-dd'));
+        	self.shifts = getShifts();
+        }
+        
+        function previousWeek(){
+        	activeWeek = new Date(activeWeek.getTime()-(7*24*60*60*1000))
+        	consoleservice.getShifts($filter('date')(getMonday(activeWeek),'yyyy-MM-dd'));
+        	self.shifts = getShifts();
         }
     }
 ]);

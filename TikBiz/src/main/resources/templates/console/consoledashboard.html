@@ -83,25 +83,23 @@
 						<div class="table-responsive">
 					        <table class="table table-hover">
 					            <thead>
-						            <tr>
-						                <th>Associates</th>
-						                <th>Mon 07/31</th>
-						                <th>Tue 08/01</th>
-						                <th>Wed 08/02</th>
-						                <th>Thu 08/03</th>
-						                <th>Fri 08/04</th>
-						                <th>Sat 08/05</th>
-						                <th>Sun 08/06</th>
-						            </tr>
+						            <tr ng-repeat="(name, shiftdetail) in consolecontroller.shifts track by $index" ng-if="$index==0">
+						            	<th>Associates</th>
+								        <td ng-repeat="(date, shift) in shiftdetail"><b>{{date | date:'EEE MM/dd'}}</b></td>
+								    </tr>
 					            </thead>
 					            <tbody>
-						            <tr ng-repeat="(name, shiftdetail) in consolecontroller.getShifts()">
+						            <tr ng-repeat="(name, shiftdetail) in consolecontroller.shifts">
 								        <td>{{name | uppercase}}</td>
 								        <td ng-repeat="(date, shift) in shiftdetail">{{shift}}</td>
 								    </tr>
 					            </tbody>
 					        </table>		
 						</div>
+						<div class="row">
+	                        <button type="button" ng-click="consolecontroller.previousWeek()" class="btn btn-warning btn-sm form-actions floatLeft">Previous Week</button>
+	                        <button type="button" ng-click="consolecontroller.nextWeek()" class="btn btn-warning btn-sm form-actions floatRight">Next Week</button>
+			           	</div>
 					</div>
 		   	 	</div>
 		   	</div>

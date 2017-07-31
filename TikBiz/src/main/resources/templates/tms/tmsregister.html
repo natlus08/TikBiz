@@ -3,25 +3,42 @@
     <div class="alert alert-success" role="alert" ng-if="tmscontroller.successMessage">{{tmscontroller.successMessage}}</div>
 	<div class="alert alert-danger" role="alert" ng-if="tmscontroller.errorMessage">{{tmscontroller.errorMessage}}</div>
     <form name="tmsregister" ng-submit="tmscontroller.register()" role="form" autocomplete="off">
-        <div class="form-group" ng-class="{ 'has-error': tmsregister.firstName.$dirty && form.firstName.$error.required }">
-            <label for="username">First name</label>
+        <div class="form-group" ng-class="{ 'has-error': tmsregister.firstName.$dirty && tmsregister.firstName.$error.required }">
+            <label for="firstName">First name<span style="color:red">*</span></label>
             <input type="text" name="firstName" id="firstName" class="form-control" ng-model="tmscontroller.user.firstName" required />
             <span ng-show="tmsregister.firstName.$dirty && tmsregister.firstName.$error.required" class="help-block">First name is required</span>
         </div>
         <div class="form-group" ng-class="{ 'has-error': tmsregister.lastName.$dirty && tmsregister.lastName.$error.required }">
-            <label for="username">Last name</label>
+            <label for="lastName">Last name<span style="color:red">*</span></label>
             <input type="text" name="lastName" id="Text1" class="form-control" ng-model="tmscontroller.user.lastName" required />
             <span ng-show="tmsregister.lastName.$dirty && tmsregister.lastName.$error.required" class="help-block">Last name is required</span>
         </div>
         <div class="form-group" ng-class="{ 'has-error': tmsregister.userName.$dirty && tmsregister.userName.$error.required }">
-            <label for="userName">Username</label>
+            <label for="userName">Username<span style="color:red">*</span></label>
             <input type="text" name="userName" id="userName" class="form-control" ng-model="tmscontroller.user.userName" required />
             <span ng-show="tmsregister.userName.$dirty && tmsregister.userName.$error.required" class="help-block">Username is required</span>
         </div>
         <div class="form-group" ng-class="{ 'has-error': tmsregister.password.$dirty && tmsregister.password.$error.required }">
-            <label for="password">Password</label>
+            <label for="password">Password<span style="color:red">*</span></label>
             <input type="password" name="password" id="password" class="form-control" ng-model="tmscontroller.user.password" required />
             <span ng-show="tmsregister.password.$dirty && tmsregister.password.$error.required" class="help-block">Password is required</span>
+        </div>
+        <div class="form-group" ng-class="{ 'has-error': tmsregister.mobileNumber.$dirty && tmsregister.mobileNumber.$error.required }">
+            <label for="mobileNumber">Mobile Number<span style="color:red">*</span></label>
+            <input type="text" name="mobileNumber" id="mobileNumber" class="form-control" ng-model="tmscontroller.user.mobileNumber" required ng-pattern="tmscontroller.onlyIntegers" ng-minlength="10" ng-maxlength="10"/>
+            <span ng-show="tmsregister.mobileNumber.$dirty && tmsregister.mobileNumber.$error.required" class="help-block">Mobile number is required</span>
+            <span ng-show="tmsregister.mobileNumber.$dirty && (tmsregister.mobileNumber.$error.pattern|| tmsregister.mobileNumber.$error.maxlength || tmsregister.mobileNumber.$error.minlength)" class="help-block">Enter a valid Phone Number, must contain only 10 numbers</span>
+        </div>
+        <div class="form-group" ng-class="{ 'has-error': tmsregister.role.$dirty && tmsregister.role.$error.required }">
+            <label for="role">Role<span style="color:red">*</span></label>
+            <select name="role" id="role" class="form-control input-sm" ng-model="tmscontroller.user.role" required>
+		 		<option value="">---Please select a role---</option>
+				<option value="USER">USER</option>
+				<option value="SUPPORT">SUPPORT</option>
+				<option value="SUPPORT-LEAD">SUPPORT-LEAD</option>
+				<option value="SUPPORT-MANAGER">SUPPORT-MANAGER</option>
+			</select>
+            <span ng-show="tmsregister.role.$dirty && tmsregister.role.$error.required" class="help-block">Role is required</span>
         </div>
         <div class="form-actions">
             <button type="submit" ng-disabled="tmsregister.$invalid" class="btn btn-primary">Register</button>

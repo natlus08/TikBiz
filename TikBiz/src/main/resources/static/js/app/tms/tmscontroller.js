@@ -22,6 +22,8 @@ angular.module('tmsapp').controller('tmscontroller',
         self.successMessage = '';
         self.errorMessage = '';
         
+        self.onlyIntegers = /^\d+$/;
+        
         self.validateTicketForm = false;
 
         function login() {

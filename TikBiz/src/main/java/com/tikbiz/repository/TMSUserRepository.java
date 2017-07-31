@@ -13,4 +13,7 @@ public interface TMSUserRepository extends JpaRepository<TMSUser, Long> {
 	TMSUser findByUserName(String userName);
 	
 	List<TMSUser> findByRole(String role);
+
+	TMSUser findByUserNameAndPasswordAndRoleIn(String userName,
+			String password, List<String> roles);
 }

@@ -1,5 +1,6 @@
 package com.tikbiz.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -28,6 +29,19 @@ public class TMSServiceImpl implements TMSService{
 	public TMSUser login(TMSUser user) throws TikBizException{
 		
 		TMSUser validatedUser = tmsUserRepository.findByUserNameAndPassword(user.getUserName(), user.getPassword());
+		if(null == validatedUser){
+			throw new TikBizException("User not found");
+		}
+		return validatedUser;
+	}
+	
+	@Override
+	public TMSUser dashboardLogin(TMSUser user) throws TikBizException{
+		List<String> roles = new ArrayList<String>();
+		roles.add("SUPPORT");
+		roles.add("SUPPORT-LEAD");
+		roles.add("SUPPORT-MANAGER");
+		TMSUser validatedUser = tmsUserRepository.findByUserNameAndPasswordAndRoleIn(user.getUserName(), user.getPassword(), roles);
 		if(null == validatedUser){
 			throw new TikBizException("User not found");
 		}
@@ -79,3 +93,4 @@ public class TMSServiceImpl implements TMSService{
 	}
 	
 }
+

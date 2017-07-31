@@ -24,5 +24,7 @@ public interface TMSService {
 	TMSTicket editCustomer(TMSTicket ticket) throws TikBizException;
 
 	List<TMSTicket> readAll() throws TikBizException;
+
+	TMSUser dashboardLogin(TMSUser user) throws TikBizException;
 	
 }

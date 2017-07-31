@@ -42,7 +42,7 @@ public class ConsoleRestController {
 	
 	@PostMapping("/login")
 	public ResponseEntity<TMSUser> login(@RequestBody TMSUser user) throws TikBizException{
-		TMSUser validatedUser = tmsService.login(user);
+		TMSUser validatedUser = tmsService.dashboardLogin(user);
 		return new ResponseEntity<TMSUser>(validatedUser,HttpStatus.OK);
 	}
 	

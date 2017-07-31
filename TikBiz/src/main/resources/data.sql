@@ -61,8 +61,8 @@ insert into ShiftRoaster_shifts(ShiftRoaster_id, shifts_KEY, shifts) values(7, '
 insert into ShiftRoaster_shifts(ShiftRoaster_id, shifts_KEY, shifts) values(7, 'NIGHT', 'kaderh,marimum');
 
 insert into SHIFT_ROASTER(id, DATE) values (8,'2017-08-07');
-insert into ShiftRoaster_shifts(ShiftRoaster_id, shifts_KEY, shifts) values(8, 'MORNING', 'kaderh,marimum');
-insert into ShiftRoaster_shifts(ShiftRoaster_id, shifts_KEY, shifts) values(8, 'NOON', 'gurusam');
+insert into ShiftRoaster_shifts(ShiftRoaster_id, shifts_KEY, shifts) values(8, 'NOON', 'kaderh,marimum');
+insert into ShiftRoaster_shifts(ShiftRoaster_id, shifts_KEY, shifts) values(8, 'MORNING', 'gurusam');
 insert into ShiftRoaster_shifts(ShiftRoaster_id, shifts_KEY, shifts) values(8, 'NIGHT', 'maruthr');
 insert into ShiftRoaster_shifts(ShiftRoaster_id, shifts_KEY, shifts) values(8, 'OFF', 'balaksa');
 

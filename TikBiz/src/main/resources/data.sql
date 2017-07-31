@@ -3,6 +3,10 @@ insert into TMS_USER(id, FIRST_NAME, LAST_NAME, PASSWORD, USER_NAME, ROLE) value
 insert into TMS_USER(id, FIRST_NAME, LAST_NAME, PASSWORD, USER_NAME, ROLE) values(3, 'ravi', 'kumar', '123456', 'maruthr', 'SUPPORT');
 insert into TMS_USER(id, FIRST_NAME, LAST_NAME, PASSWORD, USER_NAME, ROLE) values(4, 'santosh', 'balakrishnan', '123456', 'balaksa', 'SUPPORT');
 insert into TMS_USER(id, FIRST_NAME, LAST_NAME, PASSWORD, USER_NAME, ROLE) values(5, 'murali', 'manohar', '123456', 'marimum', 'SUPPORT');
+insert into TMS_USER(id, FIRST_NAME, LAST_NAME, PASSWORD, USER_NAME, ROLE) values(6, 'kumar', 'karthik', '123456', 'karku', 'SUPPORT-LEAD');
+insert into TMS_USER(id, FIRST_NAME, LAST_NAME, PASSWORD, USER_NAME, ROLE) values(7, 'shanmugam', 'karthikeyan', '123456', 'karsha', 'SUPPORT-MANAGER');
+insert into TMS_USER(id, FIRST_NAME, LAST_NAME, PASSWORD, USER_NAME, ROLE) values(8, 'velan', 'vetri', '123456', 'vetve', 'USER');
+insert into TMS_USER(id, FIRST_NAME, LAST_NAME, PASSWORD, USER_NAME, ROLE) values(9, 'daniel', 'jack', '123456', 'jacda', 'USER');
 
 
 insert into TMS_TICKET(id, CREATED_BY, DESCRIPTION, MODIFIED_BY, PRIORITY, STATUS, CREATED_DATE) values(1, 'kaderh', 'INC1', '', 'P1', 'NEW', '2017-07-20 06:14:00.742000000');
@@ -55,3 +59,45 @@ insert into ShiftRoaster_shifts(ShiftRoaster_id, shifts_KEY, shifts) values(7, '
 insert into ShiftRoaster_shifts(ShiftRoaster_id, shifts_KEY, shifts) values(7, 'NOON', 'balaksa');
 insert into ShiftRoaster_shifts(ShiftRoaster_id, shifts_KEY, shifts) values(7, 'OFF', 'maruthr');
 insert into ShiftRoaster_shifts(ShiftRoaster_id, shifts_KEY, shifts) values(7, 'NIGHT', 'kaderh,marimum');
+
+insert into SHIFT_ROASTER(id, DATE) values (8,'2017-08-07');
+insert into ShiftRoaster_shifts(ShiftRoaster_id, shifts_KEY, shifts) values(8, 'MORNING', 'kaderh,marimum');
+insert into ShiftRoaster_shifts(ShiftRoaster_id, shifts_KEY, shifts) values(8, 'NOON', 'gurusam');
+insert into ShiftRoaster_shifts(ShiftRoaster_id, shifts_KEY, shifts) values(8, 'NIGHT', 'maruthr');
+insert into ShiftRoaster_shifts(ShiftRoaster_id, shifts_KEY, shifts) values(8, 'OFF', 'balaksa');
+
+insert into SHIFT_ROASTER(id, DATE) values (9,'2017-08-08');
+insert into ShiftRoaster_shifts(ShiftRoaster_id, shifts_KEY, shifts) values(9, 'MORNING', 'balaksa');
+insert into ShiftRoaster_shifts(ShiftRoaster_id, shifts_KEY, shifts) values(9, 'NOON', 'gurusam,marimum');
+insert into ShiftRoaster_shifts(ShiftRoaster_id, shifts_KEY, shifts) values(9, 'NIGHT', 'maruthr');
+insert into ShiftRoaster_shifts(ShiftRoaster_id, shifts_KEY, shifts) values(9, 'OFF', 'kaderh');
+
+insert into SHIFT_ROASTER(id, DATE) values (10,'2017-08-09');
+insert into ShiftRoaster_shifts(ShiftRoaster_id, shifts_KEY, shifts) values(10, 'MORNING', 'gurusam');
+insert into ShiftRoaster_shifts(ShiftRoaster_id, shifts_KEY, shifts) values(10, 'NOON', 'balaksa');
+insert into ShiftRoaster_shifts(ShiftRoaster_id, shifts_KEY, shifts) values(10, 'NIGHT', 'maruthr,marimum');
+insert into ShiftRoaster_shifts(ShiftRoaster_id, shifts_KEY, shifts) values(10, 'OFF', 'kaderh');
+
+insert into SHIFT_ROASTER(id, DATE) values (11,'2017-08-10');
+insert into ShiftRoaster_shifts(ShiftRoaster_id, shifts_KEY, shifts) values(11, 'MORNING', 'gurusam');
+insert into ShiftRoaster_shifts(ShiftRoaster_id, shifts_KEY, shifts) values(11, 'NOON', 'balaksa');
+insert into ShiftRoaster_shifts(ShiftRoaster_id, shifts_KEY, shifts) values(11, 'OFF', 'maruthr,marimum');
+insert into ShiftRoaster_shifts(ShiftRoaster_id, shifts_KEY, shifts) values(11, 'NIGHT', 'kaderh');
+
+insert into SHIFT_ROASTER(id, DATE) values (12,'2017-08-11');
+insert into ShiftRoaster_shifts(ShiftRoaster_id, shifts_KEY, shifts) values(12, 'MORNING', 'gurusam');
+insert into ShiftRoaster_shifts(ShiftRoaster_id, shifts_KEY, shifts) values(12, 'NOON', 'balaksa');
+insert into ShiftRoaster_shifts(ShiftRoaster_id, shifts_KEY, shifts) values(12, 'OFF', 'maruthr');
+insert into ShiftRoaster_shifts(ShiftRoaster_id, shifts_KEY, shifts) values(12, 'NIGHT', 'kaderh,marimum');
+
+insert into SHIFT_ROASTER(id, DATE) values (13,'2017-08-12');
+insert into ShiftRoaster_shifts(ShiftRoaster_id, shifts_KEY, shifts) values(13, 'MORNING', 'gurusam');
+insert into ShiftRoaster_shifts(ShiftRoaster_id, shifts_KEY, shifts) values(13, 'NOON', 'balaksa');
+insert into ShiftRoaster_shifts(ShiftRoaster_id, shifts_KEY, shifts) values(13, 'OFF', 'maruthr');
+insert into ShiftRoaster_shifts(ShiftRoaster_id, shifts_KEY, shifts) values(13, 'NIGHT', 'kaderh,marimum');
+
+insert into SHIFT_ROASTER(id, DATE) values (14,'2017-08-13');
+insert into ShiftRoaster_shifts(ShiftRoaster_id, shifts_KEY, shifts) values(14, 'MORNING', 'gurusam');
+insert into ShiftRoaster_shifts(ShiftRoaster_id, shifts_KEY, shifts) values(14, 'NOON', 'balaksa');
+insert into ShiftRoaster_shifts(ShiftRoaster_id, shifts_KEY, shifts) values(14, 'OFF', 'maruthr');
+insert into ShiftRoaster_shifts(ShiftRoaster_id, shifts_KEY, shifts) values(14, 'NIGHT', 'kaderh,marimum');

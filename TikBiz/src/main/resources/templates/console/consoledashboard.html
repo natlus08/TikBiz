@@ -8,10 +8,10 @@
 	<div class="col-md-2">
 		<ul class="nav nav-pills nav-stacked">
 	    	<li ng-class="{ active: isSet(1) }">
-	       	<a href ng-click="consolecontroller.setTab(1)">Dashboard</a>
+	       		<a href ng-click="consolecontroller.setTab(1)">Dashboard</a>
 	    	</li>
-	    	<li ng-class="{ active: isSet(2) }">
-	       	<a href ng-click="consolecontroller.setTab(2)">Shift Roaster</a>
+	    	<li ng-if="consolecontroller.user.role == 'SUPPORT'" ng-class="{ active: isSet(2) }">
+	       		<a href ng-click="consolecontroller.setTab(2)">Shift Roaster</a>
 	    	</li>
 	  	</ul>
 	</div>
@@ -75,7 +75,7 @@
 					</div>
 		   	 	</div>
 		   	</div>
-			<div ng-show="consolecontroller.isSet(2)">
+			<div ng-if="consolecontroller.user.role == 'SUPPORT'" ng-show="consolecontroller.isSet(2)">
 		        <h1>Shift Roaster</h1>
 		        <div class="panel panel-default">
 			        <div class="panel-heading"><span class="lead">Shift Details</span></div>

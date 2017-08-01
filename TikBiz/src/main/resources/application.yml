@@ -27,8 +27,8 @@ spring:
 datasource:
   tikbizapp:
     url: jdbc:mysql://localhost:3306/tikbizapp
-    username: myuser
-    password: mypassword
+    username: root
+    password: 
     driverClassName: com.mysql.jdbc.Driver
     defaultSchema:
     maxPoolSize: 20

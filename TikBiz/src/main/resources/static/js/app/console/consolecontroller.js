@@ -25,6 +25,8 @@ angular.module('consoleapp').controller('consolecontroller',
         
         self.validateTicketForm = false;
         
+        self.nodata = false;
+        
         self.today = $filter('date')(new Date(),'MM/dd/yyyy');
         
         var activeWeek;
@@ -81,11 +83,26 @@ angular.module('consoleapp').controller('consolecontroller',
         
         function prepareDashboard(){
         	self.user = consoleservice.getUser();
-        	consoleservice.loadAllTickets();
-        	self.tickets = getAllTickets();
         	
-        	consoleservice.getShifts($filter('date')(getMonday(new Date()),'yyyy-MM-dd'));
-        	self.shifts = getShifts();
+        	consoleservice.loadAllTickets()
+            .then(
+                function (response){
+                	self.tickets = getAllTickets();
+                },
+                function(errResponse){
+                	
+                }
+            );
+        	
+        	consoleservice.getShifts($filter('date')(getMonday(new Date()),'yyyy-MM-dd'))
+            .then(
+                function (response){
+                	self.shifts = getShifts();
+                },
+                function(errResponse){
+                	
+                }
+            );
         }
         
         function getMessage(){
@@ -129,14 +146,40 @@ angular.module('consoleapp').controller('consolecontroller',
         
         function nextWeek(){
         	activeWeek = new Date(activeWeek.getTime()+(7*24*60*60*1000))
-        	consoleservice.getShifts($filter('date')(getMonday(activeWeek),'yyyy-MM-dd'));
-        	self.shifts = getShifts();
+        	consoleservice.getShifts($filter('date')(getMonday(activeWeek),'yyyy-MM-dd'))
+            .then(
+                function (response){
+                	self.shifts = getShifts();
+                	emptyCheck();
+                },
+                function(errResponse){
+                	
+                }
+            );
         }
         
         function previousWeek(){
         	activeWeek = new Date(activeWeek.getTime()-(7*24*60*60*1000))
-        	consoleservice.getShifts($filter('date')(getMonday(activeWeek),'yyyy-MM-dd'));
-        	self.shifts = getShifts();
+        	consoleservice.getShifts($filter('date')(getMonday(activeWeek),'yyyy-MM-dd'))
+            .then(
+                function (response){
+                	self.shifts = getShifts();
+                	emptyCheck();
+                },
+                function(errResponse){
+                	
+                }
+            );
+        }
+        
+        function emptyCheck(){
+        	angular.forEach(self.shifts, function(shiftDetail, name){
+        		if(angular.equals(shiftDetail, {})){
+        			self.nodata = true;
+        		}else{
+        			self.nodata = false;
+        		}
+        	});
         }
     }
 ]);

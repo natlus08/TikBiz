@@ -80,7 +80,7 @@
 		        <div class="panel panel-default">
 			        <div class="panel-heading"><span class="lead">Shift Details</span></div>
 					<div class="panel-body">
-						<div class="table-responsive">
+						<div class="table-responsive" ng-hide="consolecontroller.nodata">
 					        <table class="table table-hover">
 					            <thead>
 						            <tr ng-repeat="(name, shiftdetail) in consolecontroller.shifts track by $index" ng-if="$index==0">
@@ -96,6 +96,7 @@
 					            </tbody>
 					        </table>		
 						</div>
+						<div class="table-responsive" ng-show="consolecontroller.nodata">No Data Available for this Week<br></div>
 						<div class="row">
 	                        <button type="button" ng-click="consolecontroller.previousWeek()" class="btn btn-warning btn-sm form-actions floatLeft">Previous Week</button>
 	                        <button type="button" ng-click="consolecontroller.nextWeek()" class="btn btn-warning btn-sm form-actions floatRight">Next Week</button>

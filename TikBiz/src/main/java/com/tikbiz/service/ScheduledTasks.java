@@ -1,5 +1,6 @@
 package com.tikbiz.service;
 
+import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -47,7 +48,7 @@ public class ScheduledTasks {
 	public RestTemplate restTemplate() {
 		return new RestTemplate();
 	}
-	
+
 	@Autowired
 	private Environment environment;
 
@@ -109,19 +110,20 @@ public class ScheduledTasks {
 									- timeFormatter.parse(shiftTime).getTime();
 
 							if (difference == 4) {
-								logger.info("Message should to sent to the following support member :"
+								logger.info("Message should be sent to the following support member :"
 										+ tmsUser.getUserName());
 								// Code to send Message
-								String message = environment.getRequiredProperty("tikbiz.shift.start.message");
-								String url = "https://www.smsgatewayhub.com/api/mt/SendSMS?APIKey=8Dza5VhlaE2KvN7n1l59NA&senderid=TESTIN&channel=2&DCS=0&flashsms=0&number="
-										+ tmsUser.getMobileNumber()
-										+ "&text="
-										+ message + "&route=11";
-								logger.info("Formed URL is:" + url);
+								String url = MessageFormat
+										.format(environment
+												.getRequiredProperty("tikbiz.sms.endpoint"),
+												tmsUser.getMobileNumber(),
+												environment
+														.getRequiredProperty("tikbiz.message.shiftstart"));
 								try {
 									ResponseEntity<String> response = restTemplate()
 											.getForEntity(url, String.class);
 								} catch (Exception exception) {
+									logger.info("Formed URL is:" + url);
 									logger.error("Exception while sending message"
 											+ exception.getMessage());
 								}
@@ -147,35 +149,36 @@ public class ScheduledTasks {
 
 			if (tmsTicket.getPriority().equalsIgnoreCase("P1")
 					&& minutesDifference == 10) {
-				sendMessageToSupportLead(supportUsers, tmsTicket.getPriority());
+				sendMessageToSupportLead(supportUsers, tmsTicket.getPriority(), tmsTicket.getId());
 			} else if (tmsTicket.getPriority().equalsIgnoreCase("P2")
 					&& minutesDifference == 25) {
-				sendMessageToSupportLead(supportUsers, tmsTicket.getPriority());
+				sendMessageToSupportLead(supportUsers, tmsTicket.getPriority(), tmsTicket.getId());
 			} else if (tmsTicket.getPriority().equalsIgnoreCase("P3")
 					&& minutesDifference == 40) {
-				sendMessageToSupportLead(supportUsers, tmsTicket.getPriority());
+				sendMessageToSupportLead(supportUsers, tmsTicket.getPriority(), tmsTicket.getId());
 			} else if (tmsTicket.getPriority().equalsIgnoreCase("P4")
 					&& minutesDifference == 55) {
-				sendMessageToSupportLead(supportUsers, tmsTicket.getPriority());
+				sendMessageToSupportLead(supportUsers, tmsTicket.getPriority(), tmsTicket.getId());
 			}
 		}
 	}
 
 	public void sendMessageToSupportLead(List<TMSUser> supportUsers,
-			String ticketPriority) {
+			String ticketPriority, Long ticketId) {
 
 		for (TMSUser supportUser : supportUsers) {
 			if (supportUser.getRole().equalsIgnoreCase("SUPPORT-LEAD")) {
 				logger.info("Message should be sent to the following support member :"
 						+ supportUser.getUserName());
-				String message = "Ticket raised at Priority level"
-						+ ticketPriority
-						+ "is not yet looked into, please provide necessary support";
-				String url = "https://www.smsgatewayhub.com/api/mt/SendSMS?APIKey=8Dza5VhlaE2KvN7n1l59NA&senderid=TESTIN&channel=2&DCS=0&flashsms=0&number="
-						+ supportUser.getMobileNumber()
-						+ "&text="
-						+ message
-						+ "&route=11";
+				String message = MessageFormat
+						.format(environment
+								.getRequiredProperty("tikbiz.message.escalation"),ticketId.toString(),
+								ticketPriority);
+				String url = MessageFormat
+						.format(environment
+								.getRequiredProperty("tikbiz.sms.endpoint"),
+								supportUser.getMobileNumber(),
+								message);
 				try {
 					ResponseEntity<String> response = restTemplate()
 							.getForEntity(url, String.class);

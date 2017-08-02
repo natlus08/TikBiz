@@ -1,12 +1,12 @@
-insert into TMS_USER(id, FIRST_NAME, LAST_NAME, PASSWORD, USER_NAME, ROLE) values(1, 'hameedu', 'sultan', '123456', 'kaderh', 'SUPPORT');
-insert into TMS_USER(id, FIRST_NAME, LAST_NAME, PASSWORD, USER_NAME, ROLE) values(2, 'vinoth', 'kumar', '123456', 'gurusam', 'SUPPORT');
-insert into TMS_USER(id, FIRST_NAME, LAST_NAME, PASSWORD, USER_NAME, ROLE) values(3, 'ravi', 'kumar', '123456', 'maruthr', 'SUPPORT');
-insert into TMS_USER(id, FIRST_NAME, LAST_NAME, PASSWORD, USER_NAME, ROLE) values(4, 'santosh', 'balakrishnan', '123456', 'balaksa', 'SUPPORT');
-insert into TMS_USER(id, FIRST_NAME, LAST_NAME, PASSWORD, USER_NAME, ROLE) values(5, 'murali', 'manohar', '123456', 'marimum', 'SUPPORT');
-insert into TMS_USER(id, FIRST_NAME, LAST_NAME, PASSWORD, USER_NAME, ROLE) values(6, 'kumar', 'karthik', '123456', 'karku', 'SUPPORT-LEAD');
-insert into TMS_USER(id, FIRST_NAME, LAST_NAME, PASSWORD, USER_NAME, ROLE) values(7, 'shanmugam', 'karthikeyan', '123456', 'karsha', 'SUPPORT-MANAGER');
-insert into TMS_USER(id, FIRST_NAME, LAST_NAME, PASSWORD, USER_NAME, ROLE) values(8, 'velan', 'vetri', '123456', 'vetve', 'USER');
-insert into TMS_USER(id, FIRST_NAME, LAST_NAME, PASSWORD, USER_NAME, ROLE) values(9, 'daniel', 'jack', '123456', 'jacda', 'USER');
+insert into TMS_USER(id, FIRST_NAME, LAST_NAME, PASSWORD, USER_NAME, ROLE, MOBILENUMBER) values(1, 'hameedu', 'sultan', '123456', 'kaderh', 'SUPPORT', '9600074749');
+insert into TMS_USER(id, FIRST_NAME, LAST_NAME, PASSWORD, USER_NAME, ROLE, MOBILENUMBER) values(2, 'vinoth', 'kumar', '123456', 'gurusam', 'SUPPORT', '9600074749');
+insert into TMS_USER(id, FIRST_NAME, LAST_NAME, PASSWORD, USER_NAME, ROLE, MOBILENUMBER) values(3, 'ravi', 'kumar', '123456', 'maruthr', 'SUPPORT', '9600074749');
+insert into TMS_USER(id, FIRST_NAME, LAST_NAME, PASSWORD, USER_NAME, ROLE, MOBILENUMBER) values(4, 'santosh', 'balakrishnan', '123456', 'balaksa', 'SUPPORT', '9600074749');
+insert into TMS_USER(id, FIRST_NAME, LAST_NAME, PASSWORD, USER_NAME, ROLE, MOBILENUMBER) values(5, 'murali', 'manohar', '123456', 'marimum', 'SUPPORT', '9600074749');
+insert into TMS_USER(id, FIRST_NAME, LAST_NAME, PASSWORD, USER_NAME, ROLE, MOBILENUMBER) values(6, 'kumar', 'karthik', '123456', 'karku', 'SUPPORT-LEAD', '9600074749');
+insert into TMS_USER(id, FIRST_NAME, LAST_NAME, PASSWORD, USER_NAME, ROLE, MOBILENUMBER) values(7, 'shanmugam', 'karthikeyan', '123456', 'karsha', 'SUPPORT-MANAGER', '9600074749');
+insert into TMS_USER(id, FIRST_NAME, LAST_NAME, PASSWORD, USER_NAME, ROLE, MOBILENUMBER) values(8, 'velan', 'vetri', '123456', 'vetve', 'USER', '9600074749');
+insert into TMS_USER(id, FIRST_NAME, LAST_NAME, PASSWORD, USER_NAME, ROLE, MOBILENUMBER) values(9, 'daniel', 'jack', '123456', 'jacda', 'USER', '9600074749');
 
 
 insert into TMS_TICKET(id, CREATED_BY, DESCRIPTION, MODIFIED_BY, PRIORITY, STATUS, CREATED_DATE) values(1, 'kaderh', 'INC1', '', 'P1', 'NEW', '2017-07-20 06:14:00.742000000');

@@ -1,5 +1,6 @@
 package com.tikbiz.service;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -18,42 +20,49 @@ import com.tikbiz.repository.TMSTicketRepository;
 import com.tikbiz.repository.TMSUserRepository;
 
 @Service
-public class TMSServiceImpl implements TMSService{
-	
-	public static final Logger logger = LoggerFactory.getLogger(TMSServiceImpl.class);
-	
+public class TMSServiceImpl implements TMSService {
+
+	public static final Logger logger = LoggerFactory
+			.getLogger(TMSServiceImpl.class);
+
 	@Autowired
 	private TMSUserRepository tmsUserRepository;
-	
+
 	@Autowired
 	private TMSTicketRepository tmsTicketRepository;
-	
+
 	@Autowired
 	private ShiftService shiftService;
-	
+
 	@Bean
 	public RestTemplate restTemplate() {
-	    return new RestTemplate();
+		return new RestTemplate();
 	}
 
+	@Autowired
+	private Environment environment;
+
 	@Override
-	public TMSUser login(TMSUser user) throws TikBizException{
-		
-		TMSUser validatedUser = tmsUserRepository.findByUserNameAndPassword(user.getUserName(), user.getPassword());
-		if(null == validatedUser){
+	public TMSUser login(TMSUser user) throws TikBizException {
+
+		TMSUser validatedUser = tmsUserRepository.findByUserNameAndPassword(
+				user.getUserName(), user.getPassword());
+		if (null == validatedUser) {
 			throw new TikBizException("User not found");
 		}
 		return validatedUser;
 	}
-	
+
 	@Override
-	public TMSUser dashboardLogin(TMSUser user) throws TikBizException{
+	public TMSUser dashboardLogin(TMSUser user) throws TikBizException {
 		List<String> roles = new ArrayList<String>();
 		roles.add("SUPPORT");
 		roles.add("SUPPORT-LEAD");
 		roles.add("SUPPORT-MANAGER");
-		TMSUser validatedUser = tmsUserRepository.findByUserNameAndPasswordAndRoleIn(user.getUserName(), user.getPassword(), roles);
-		if(null == validatedUser){
+		TMSUser validatedUser = tmsUserRepository
+				.findByUserNameAndPasswordAndRoleIn(user.getUserName(),
+						user.getPassword(), roles);
+		if (null == validatedUser) {
 			throw new TikBizException("User not found");
 		}
 		return validatedUser;
@@ -62,13 +71,14 @@ public class TMSServiceImpl implements TMSService{
 	@Override
 	public TMSUser register(TMSUser user) throws TikBizException {
 		TMSUser registeredUser = null;
-		TMSUser existingUser = tmsUserRepository.findByUserName(user.getUserName());
-		if(null == existingUser){
+		TMSUser existingUser = tmsUserRepository.findByUserName(user
+				.getUserName());
+		if (null == existingUser) {
 			registeredUser = tmsUserRepository.save(user);
-			if(null == registeredUser){
+			if (null == registeredUser) {
 				throw new TikBizException("User registration failed");
 			}
-		}else{
+		} else {
 			throw new TikBizException("User already exists");
 		}
 		return registeredUser;
@@ -78,33 +88,44 @@ public class TMSServiceImpl implements TMSService{
 	public void createTicket(TMSTicket ticket) throws TikBizException {
 		tmsTicketRepository.save(ticket);
 		@SuppressWarnings("unchecked")
-		List<TMSUser> existingUserList = tmsUserRepository.findByRole("SUPPORT");
-		if(null == existingUserList){
+		List<TMSUser> existingUserList = tmsUserRepository
+				.findByRole("SUPPORT");
+		if (null == existingUserList) {
 			logger.error("There is no User with role as SupportTeam");
 		} else {
 			String url = null;
 			ResponseEntity<String> response = null;
-			TMSUser existingUser = tmsUserRepository.findByUserName(ticket.getCreatedBy());
-			
-			//Send a response message to the user
-			String message = "Ticket :"+ticket.getErrorMessage()+" of priority "+ticket.getPriority()+" has been generated";	
-			url = "https://www.smsgatewayhub.com/api/mt/SendSMS?APIKey=8Dza5VhlaE2KvN7n1l59NA&senderid=TESTIN&channel=2&DCS=0&flashsms=0&number="+existingUser.getMobileNumber()+"&text="+message+"&route=11";
+			TMSUser existingUser = tmsUserRepository.findByUserName(ticket
+					.getCreatedBy());
+
+			// Send a response message to the user
+			String message = MessageFormat.format(environment
+					.getRequiredProperty("tikbiz.message.userticket"), ticket
+					.getId(), ticket.getPriority());
+			url = MessageFormat.format(
+					environment.getRequiredProperty("tikbiz.sms.endpoint"),
+					existingUser.getMobileNumber(), message);
 			try {
-			response = restTemplate().getForEntity(url,String.class);
-			} catch(Exception exception) {
+				response = restTemplate().getForEntity(url, String.class);
+			} catch (Exception exception) {
 				logger.info("Formed URL is:" + url);
-				logger.error("Exception while sending message" + exception.getMessage());
+				logger.error("Exception while sending message"
+						+ exception.getMessage());
 			}
-			
-			for(TMSUser tmsUser : existingUserList) {
-				if(tmsUser.getRole().equalsIgnoreCase("SUPPORT")) {
+
+			for (TMSUser tmsUser : existingUserList) {
+				if (tmsUser.getRole().equalsIgnoreCase("SUPPORT")) {
 					try {
-						//Send a response message to the Support Team
-						url = "https://www.smsgatewayhub.com/api/mt/SendSMS?APIKey=8Dza5VhlaE2KvN7n1l59NA&senderid=TESTIN&channel=2&DCS=0&flashsms=0&number="+tmsUser.getMobileNumber()+"&text="+message+"&route=11";
-						response = restTemplate().getForEntity(url,String.class);
-					} catch(Exception exception) {
+						// Send a response message to the Support Team
+						url = MessageFormat.format(environment
+								.getRequiredProperty("tikbiz.sms.endpoint"),
+								tmsUser.getMobileNumber(), message);
+						response = restTemplate().getForEntity(url,
+								String.class);
+					} catch (Exception exception) {
 						logger.info("Formed URL is:" + url);
-						logger.error("Exception while sending message" + exception.getMessage());
+						logger.error("Exception while sending message"
+								+ exception.getMessage());
 					}
 				}
 			}
@@ -115,17 +136,19 @@ public class TMSServiceImpl implements TMSService{
 	public TMSTicket findTicketByID(Long ticketId) throws TikBizException {
 		TMSTicket ticket = tmsTicketRepository.findOne(ticketId);
 		if (ticket == null) {
-			throw new TikBizException("Ticket with id " + ticketId + " not found.");
+			throw new TikBizException("Ticket with id " + ticketId
+					+ " not found.");
 		}
 		return ticket;
 	}
 
 	@Override
 	public TMSTicket editCustomer(TMSTicket ticket) throws TikBizException {
-		if(tmsTicketRepository.exists(ticket.getId())){
+		if (tmsTicketRepository.exists(ticket.getId())) {
 			ticket = tmsTicketRepository.save(ticket);
-		}else{
-			throw new TikBizException("Unable to Update. Customer with id " + ticket.getId() + " not found.");
+		} else {
+			throw new TikBizException("Unable to Update. Customer with id "
+					+ ticket.getId() + " not found.");
 		}
 		return ticket;
 	}
@@ -134,6 +157,5 @@ public class TMSServiceImpl implements TMSService{
 	public List<TMSTicket> readAll() throws TikBizException {
 		return tmsTicketRepository.findAll();
 	}
-	
-}
 
+}

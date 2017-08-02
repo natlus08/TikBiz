@@ -90,7 +90,11 @@ public class TMSServiceImpl implements TMSService{
 			String message = "Ticket :"+ticket.getErrorMessage()+"of priority "+ticket.getPriority()+"has been generated";	
 			url = "https://www.smsgatewayhub.com/api/mt/SendSMS?APIKey=8Dza5VhlaE2KvN7n1l59NA&senderid=TESTIN&channel=2&DCS=0&flashsms=0&number="+existingUser.getMobileNumber()+"&text="+message+"&route=11";
 			logger.info("Formed URL is:" + url);
+			try {
 			response = restTemplate().getForEntity(url,String.class);
+			} catch(Exception exception) {
+				logger.error("Exception while sending message" + exception.getMessage());
+			}
 			
 			for(TMSUser tmsUser : existingUserList) {
 				if(tmsUser.getRole().equalsIgnoreCase("SUPPORT")) {
@@ -99,9 +103,8 @@ public class TMSServiceImpl implements TMSService{
 						url = "https://www.smsgatewayhub.com/api/mt/SendSMS?APIKey=8Dza5VhlaE2KvN7n1l59NA&senderid=TESTIN&channel=2&DCS=0&flashsms=0&number="+tmsUser.getMobileNumber()+"&text="+message+"&route=11";
 						logger.info("Formed URL is:" + url);
 						response = restTemplate().getForEntity(url,String.class);
-						
-					} catch(Exception e) {
-						logger.error("There is no User with role as SupportTeam");
+					} catch(Exception exception) {
+						logger.error("Exception while sending message" + exception.getMessage());
 					}
 				}
 			}

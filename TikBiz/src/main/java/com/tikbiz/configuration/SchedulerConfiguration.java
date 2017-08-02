@@ -7,11 +7,8 @@ import com.tikbiz.service.ScheduledTasks;
 
 @Configuration
 public class SchedulerConfiguration {
-
-//	@Bean
-//	public ScheduledTasks scheduledTasks(){
-//		return new ScheduledTasks();
-//	}
-	
-	
+	@Bean
+	public ScheduledTasks scheduledTasks(){
+		return new ScheduledTasks();
+	}
 }

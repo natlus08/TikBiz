@@ -58,98 +58,99 @@ public class ScheduledTasks {
     public void reportCurrentTime() throws ParseException {
     	
 		//Current Date
-//		Date currentDate = new Date();
+		Date currentDate = new Date();
 		
 		//format current date
-//		SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd");
+		SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd");
 		
 		//format current time
-//		SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss");
+		SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss");
 		
-//    	List<ShiftRoaster> shifts = shiftRoasterRepository.findByDateGreaterThanEqual(currentDate, seven);
+    	List<ShiftRoaster> shifts = shiftRoasterRepository.findByDateGreaterThanEqual(currentDate, seven);
 		//Get a list of support users
-//    	List<TMSUser> supportUsers = tmsUserRepository.findByRole("SUPPORT");
+     	List<TMSUser> supportUsers = tmsUserRepository.findByRole("SUPPORT");
 
 		
     	//Messages should go when current time is 4 hours before of shiftTime
-//		for (TMSUser tmsUser : supportUsers) {
-//			for (ShiftRoaster shiftRoaster : shifts) {
-//				
-//				//compare current date with DB date
-//				if(dateFormatter.format(currentDate).equalsIgnoreCase(dateFormatter.format(shiftRoaster.getDate()))) {
-//					
-//					Map<ShiftType, String> shift = shiftRoaster.getShifts();
-//					for (Map.Entry<ShiftType, String> entry : shift.entrySet()){
-//						String shiftTime = null;;
-//					    if(entry.getValue().contains(tmsUser.getUserName())){
-//					    	if(entry.getKey().equals("MORNING")){
-//					    		shiftTime = "6:00:00";
-//					    	}else if(entry.getKey().equals("NOON")) {
-//					    		shiftTime = "14:00:00";
-//					    	} else if(entry.getKey().equals("NIGHT")) {
-//					    		shiftTime = "22:00:00";
-//					    	}
-//					    }
-//					  
-//					    	//Messages should go when current time is 4 hours before of shiftTime
-//					        Date currentDateTime = timeFormatter.parse(new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime()));
-//					        
-//					        float difference = currentDateTime.getTime() - timeFormatter.parse(shiftTime).getTime();
-//					    
-//					    	if(difference == 4) {
-//						    	logger.info("Message should to sent to the following support member :" + tmsUser.getUserName());	
-//						    	//Code to send Message
-//						    	String message = "Your Shift is about to start in 4 hours from now, Thanks."; 
-//						    	String url = "https://www.smsgatewayhub.com/api/mt/SendSMS?APIKey=8Dza5VhlaE2KvN7n1l59NA&senderid=TESTIN&channel=2&DCS=0&flashsms=0&number="+tmsUser.getMobileNumber()+"&text="+message+"&route=11";
-//								logger.info("Formed URL is:" + url);
-//								ResponseEntity<String> response = restTemplate().getForEntity(url,String.class);
-//								response.getStatusCode();
-//					    	}
-//				    	}
-//				    }
-//			    }
-//		    }
-//		
-//			//Send a Escalation Message when ticket status is not changed in 15 minutes
-//			List<TMSTicket> tmsTicketList = tmsTicketRepository.findByCreatedDate(currentDate);
-//			
-//			for(TMSTicket tmsTicket: tmsTicketList) {
-//
-//				Date createdDateTime = timeFormatter.parse(new SimpleDateFormat("HH:mm:ss").format(tmsTicket.getCreatedDate()));
-//			 
-//				float timeDifference = currentDate.getTime() - createdDateTime.getTime();
-//				int minutesDifference = (int) ((timeDifference / (1000*60)) % 60);
-//				
-//				if(tmsTicket.getStatus().equalsIgnoreCase("NEW") ) {
-//					
-//					if(tmsTicket.getPriority().equalsIgnoreCase("P1") && minutesDifference == 10) {
-//						
-//						for (TMSUser supportUser : supportUsers) {
-//							if(supportUser.getRole().equalsIgnoreCase("SUPPORT-LEAD")) {
-//								logger.info("Message should to sent to the following support member :" + supportUser.getUserName());
-//								String message = "Ticket raised at level P1 is not yet looked into,please provide necessary support"; 
-//						    	String url = "https://www.smsgatewayhub.com/api/mt/SendSMS?APIKey=8Dza5VhlaE2KvN7n1l59NA&senderid=TESTIN&channel=2&DCS=0&flashsms=0&number="+supportUser.getMobileNumber()+"&text="+message+"&route=11";
-//						    	ResponseEntity<String> response = restTemplate().getForEntity(url,String.class);
-//						    	System.out.println("Response code generated " +response.getStatusCode() );
-//								logger.info(url, response.getStatusCode());;
-//							}
-//						}
-//						
-//					} else if(tmsTicket.getPriority().equalsIgnoreCase("P2") && minutesDifference == 25) {
-//						
-//						for (TMSUser supportUser : supportUsers) {
-//							if(supportUser.getRole().equalsIgnoreCase("SUPPORT-LEAD")) {
-//								logger.info("Message should to sent to the following support member :" + supportUser.getUserName());
-//								String message = "Ticket raised at level P1 is not yet looked into,please provide necessary support"; 
-//						    	String url = "https://www.smsgatewayhub.com/api/mt/SendSMS?APIKey=8Dza5VhlaE2KvN7n1l59NA&senderid=TESTIN&channel=2&DCS=0&flashsms=0&number="+supportUser.getMobileNumber()+"&text="+message+"&route=11";
-//						    	ResponseEntity<String> response = restTemplate().getForEntity(url,String.class);
-//						    	System.out.println("Response code generated " +response.getStatusCode() );
-//								logger.info(url, response.getStatusCode());;
-//							}
-//						}
-//					}
-//				}
-//			}
-	    	}
-		}
+		for (TMSUser tmsUser : supportUsers) {
+			for (ShiftRoaster shiftRoaster : shifts) {
+				
+				//compare current date with DB date
+				if(dateFormatter.format(currentDate).equalsIgnoreCase(dateFormatter.format(shiftRoaster.getDate()))) {
+					
+					Map<ShiftType, String> shift = shiftRoaster.getShifts();
+					for (Map.Entry<ShiftType, String> entry : shift.entrySet()){
+						String shiftTime = null;;
+					    if(entry.getValue().contains(tmsUser.getUserName())){
+					    	if(entry.getKey().equals("MORNING")){
+					    		shiftTime = "6:00:00";
+					    	}else if(entry.getKey().equals("NOON")) {
+					    		shiftTime = "14:00:00";
+					    	} else if(entry.getKey().equals("NIGHT")) {
+					    		shiftTime = "22:00:00";
+					    	}
+					    }
+					  
+					    	//Messages should go when current time is 4 hours before of shiftTime
+					        Date currentDateTime = timeFormatter.parse(new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime()));
+					        
+					        float difference = currentDateTime.getTime() - timeFormatter.parse(shiftTime).getTime();
+					    
+					    	if(difference == 4) {
+						    	logger.info("Message should to sent to the following support member :" + tmsUser.getUserName());	
+						    	//Code to send Message
+					    	    String message = "Your Shift is about to start in 4 hours from now, Thanks."; 
+						    	String url = "https://www.smsgatewayhub.com/api/mt/SendSMS?APIKey=8Dza5VhlaE2KvN7n1l59NA&senderid=TESTIN&channel=2&DCS=0&flashsms=0&number="+tmsUser.getMobileNumber()+"&text="+message+"&route=11";
+								logger.info("Formed URL is:" + url);
+								try {
+									ResponseEntity<String> response = restTemplate().getForEntity(url,String.class);
+								} catch(Exception exception) {
+										logger.error("Exception while sending message" + exception.getMessage());
+								}
+				    	}
+				    	}
+				    }
+			    }
+		    }
 		
+			//Send a Escalation Message when ticket status is not changed in 15 minutes
+			List<TMSTicket> tmsTicketList = tmsTicketRepository.findByStatus("NEW");
+			
+			for(TMSTicket tmsTicket: tmsTicketList) {
+
+				Date createdDateTime = timeFormatter.parse(new SimpleDateFormat("HH:mm:ss").format(tmsTicket.getCreatedDate()));
+			 
+				float timeDifference = currentDate.getTime() - createdDateTime.getTime();
+				int minutesDifference = (int) ((timeDifference / (1000*60)) % 60);
+				
+					if(tmsTicket.getPriority().equalsIgnoreCase("P1") && minutesDifference == 10) {
+						sendMessageToSupportLead(supportUsers, tmsTicket.getPriority());
+					}else if(tmsTicket.getPriority().equalsIgnoreCase("P2") && minutesDifference == 25) {
+						sendMessageToSupportLead(supportUsers, tmsTicket.getPriority());
+				    }else if(tmsTicket.getPriority().equalsIgnoreCase("P3") && minutesDifference == 40) {
+				    	sendMessageToSupportLead(supportUsers, tmsTicket.getPriority());
+				    }else if(tmsTicket.getPriority().equalsIgnoreCase("P4") && minutesDifference == 55) {
+						sendMessageToSupportLead(supportUsers, tmsTicket.getPriority());
+					}
+				}
+			}
+	
+	public void sendMessageToSupportLead(List<TMSUser> supportUsers, String ticketPriority) {
+		
+		for (TMSUser supportUser : supportUsers) {
+			if(supportUser.getRole().equalsIgnoreCase("SUPPORT-LEAD")) {
+				logger.info("Message should to sent to the following support member :" + supportUser.getUserName());
+				String message = "Ticket raised at Priority level" + ticketPriority + "is not yet looked into,please provide necessary support"; 
+		    	String url = "https://www.smsgatewayhub.com/api/mt/SendSMS?APIKey=8Dza5VhlaE2KvN7n1l59NA&senderid=TESTIN&channel=2&DCS=0&flashsms=0&number="+supportUser.getMobileNumber()+"&text="+message+"&route=11";
+		    	try {
+					ResponseEntity<String> response = restTemplate().getForEntity(url,String.class);
+					logger.info(url, response.getStatusCode());;
+				} catch(Exception exception) {
+						logger.error("Exception while sending message" + exception.getMessage());
+				}
+		    	
+			}
+		}
+	}
+}
+	

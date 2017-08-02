@@ -100,7 +100,7 @@
 				                <td>{{u.createdBy}}</td>
 				                <td><span ng-if="u.modifiedBy">{{u.modifiedBy}}</span><span ng-if="!u.modifiedBy">NA</span></td>
 				                <td>{{u.createdDate  | date : 'MM/dd/yyyy'}}</td>
-				                <td><button type="button" ng-click="tmscontroller.editTicket(u.id)" class="btn btn-success custom-width">Edit</button></td>
+				                <td ng-if="u.status != 'CLOSED'"><button type="button" ng-click="tmscontroller.editTicket(u.id)" class="btn btn-success custom-width">Edit</button></td>
 				            </tr>
 				            </tbody>
 				        </table>		

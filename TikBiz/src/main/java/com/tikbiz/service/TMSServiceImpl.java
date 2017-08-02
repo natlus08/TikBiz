@@ -87,12 +87,12 @@ public class TMSServiceImpl implements TMSService{
 			TMSUser existingUser = tmsUserRepository.findByUserName(ticket.getCreatedBy());
 			
 			//Send a response message to the user
-			String message = "Ticket :"+ticket.getErrorMessage()+"of priority "+ticket.getPriority()+"has been generated";	
+			String message = "Ticket :"+ticket.getErrorMessage()+" of priority "+ticket.getPriority()+" has been generated";	
 			url = "https://www.smsgatewayhub.com/api/mt/SendSMS?APIKey=8Dza5VhlaE2KvN7n1l59NA&senderid=TESTIN&channel=2&DCS=0&flashsms=0&number="+existingUser.getMobileNumber()+"&text="+message+"&route=11";
-			logger.info("Formed URL is:" + url);
 			try {
 			response = restTemplate().getForEntity(url,String.class);
 			} catch(Exception exception) {
+				logger.info("Formed URL is:" + url);
 				logger.error("Exception while sending message" + exception.getMessage());
 			}
 			
@@ -101,9 +101,9 @@ public class TMSServiceImpl implements TMSService{
 					try {
 						//Send a response message to the Support Team
 						url = "https://www.smsgatewayhub.com/api/mt/SendSMS?APIKey=8Dza5VhlaE2KvN7n1l59NA&senderid=TESTIN&channel=2&DCS=0&flashsms=0&number="+tmsUser.getMobileNumber()+"&text="+message+"&route=11";
-						logger.info("Formed URL is:" + url);
 						response = restTemplate().getForEntity(url,String.class);
 					} catch(Exception exception) {
+						logger.info("Formed URL is:" + url);
 						logger.error("Exception while sending message" + exception.getMessage());
 					}
 				}

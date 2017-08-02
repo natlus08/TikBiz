@@ -18,7 +18,7 @@ datasource:
     maxPoolSize: 10
     hibernate:
       hbm2ddl.method: create
-      show_sql: true
+      show_sql: false
       format_sql: true
       dialect: org.hibernate.dialect.H2Dialect
 ---
@@ -37,4 +37,14 @@ datasource:
       show_sql: true
       format_sql: true
       dialect: org.hibernate.dialect.MySQLDialect
+---
+logging:
+    level:
+       root: INFO
+    org.springframework.web: INFO
+---
+tikbiz:
+    shift:
+       start:
+          message: Your Shift is about to start in 4 hours from now, Thanks.
 

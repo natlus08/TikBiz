@@ -25,7 +25,7 @@ public class ShiftRoaster implements Serializable{
 	@Temporal(TemporalType.DATE)
     private Date date;
 	
-	@ElementCollection
+	@ElementCollection(fetch = FetchType.EAGER)
     @MapKeyEnumerated(EnumType.STRING)
     private Map<ShiftType, String> shifts = new HashMap<>();
 

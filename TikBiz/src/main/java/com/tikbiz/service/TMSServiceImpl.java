@@ -1,5 +1,7 @@
 package com.tikbiz.service;
 
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -34,7 +37,11 @@ public class TMSServiceImpl implements TMSService {
 
 	@Bean
 	public RestTemplate restTemplate() {
-		return new RestTemplate();
+		SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
+		InetSocketAddress address = new InetSocketAddress(environment.getProperty("tikbiz.proxy"),Integer.parseInt(environment.getProperty("tikbiz.port")));
+		Proxy proxy = new Proxy(Proxy.Type.HTTP,address);
+		factory.setProxy(proxy);
+		return new RestTemplate(factory);
 	}
 
 	@Autowired
@@ -85,7 +92,6 @@ public class TMSServiceImpl implements TMSService {
 	@Override
 	public void createTicket(TMSTicket ticket) throws TikBizException {
 		tmsTicketRepository.save(ticket);
-		@SuppressWarnings("unchecked")
 		List<TMSUser> existingUserList = tmsUserRepository
 				.findByRole("SUPPORT");
 		if (null == existingUserList) {

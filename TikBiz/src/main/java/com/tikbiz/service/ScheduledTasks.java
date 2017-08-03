@@ -1,5 +1,7 @@
 package com.tikbiz.service;
 
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -17,6 +19,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -47,32 +50,36 @@ public class ScheduledTasks {
 
 	@Bean
 	public RestTemplate restTemplate() {
-		return new RestTemplate();
+		 SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
+		 InetSocketAddress address = new InetSocketAddress(environment.getProperty("tikbiz.proxy"),Integer.parseInt(environment.getProperty("tikbiz.port")));
+		 Proxy proxy = new Proxy(Proxy.Type.HTTP,address);
+		 factory.setProxy(proxy);
+		 return new RestTemplate(factory);
 	}
 
 	@Autowired
 	private Environment environment;
-	
-	static final int MAX_RECORD = 7;
-	
-	static final int SHIFT_START_REMINDER_DIFFERENCE = 4;
-	
-	static final int ESCALATION_DIFFERENCE_TEN = 10;
-	
-	static final int ESCALATION_DIFFERENCE_TWENTY_FIVE = 25;
-	
-	static final int ESCALATION_DIFFERENCE_FOURTY = 40;
-	
-	static final int ESCALATION_DIFFERENCE_FIFTY_FIVE = 55;
-	
-	static final int THOUSAND = 1000;
-	
-	static final int SIXTY = 60;
+
+	final int MAX_RECORD = 7;
+
+	final int SHIFT_START_REMINDER_DIFFERENCE = 4;
+
+	final int ESCALATION_DIFFERENCE_TEN = 10;
+
+	final int ESCALATION_DIFFERENCE_TWENTY_FIVE = 25;
+
+	final int ESCALATION_DIFFERENCE_FOURTY = 40;
+
+	final int ESCALATION_DIFFERENCE_FIFTY_FIVE = 55;
+
+	final int THOUSAND = 1000;
+
+	final int SIXTY = 60;
 
 	Pageable seven = new PageRequest(0, MAX_RECORD);
-	
+
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-	
+
 	// format current date
 	SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd");
 
@@ -154,7 +161,7 @@ public class ScheduledTasks {
 		// minutes
 		escalationFlow(currentDate, supportUsers);
 	}
-	
+
 	/**
 	 * Send a Escalation Message when ticket status is not changed in 15 minutes
 	 * 
@@ -162,7 +169,7 @@ public class ScheduledTasks {
 	 * @param supportUsers
 	 * @throws ParseException
 	 */
-	private void escalationFlow(Date currentDate,List<TMSUser> supportUsers)
+	private void escalationFlow(Date currentDate, List<TMSUser> supportUsers)
 			throws ParseException {
 		List<TMSTicket> tmsTicketList = tmsTicketRepository.findByStatus("NEW");
 		for (TMSTicket tmsTicket : tmsTicketList) {
@@ -176,22 +183,27 @@ public class ScheduledTasks {
 
 			if (tmsTicket.getPriority().equalsIgnoreCase("P1")
 					&& minutesDifference == ESCALATION_DIFFERENCE_TEN) {
-				sendMessageToSupportLead(supportUsers, tmsTicket.getPriority(), tmsTicket.getId());
+				sendMessageToSupportLead(supportUsers, tmsTicket.getPriority(),
+						tmsTicket.getId());
 			} else if (tmsTicket.getPriority().equalsIgnoreCase("P2")
 					&& minutesDifference == ESCALATION_DIFFERENCE_TWENTY_FIVE) {
-				sendMessageToSupportLead(supportUsers, tmsTicket.getPriority(), tmsTicket.getId());
+				sendMessageToSupportLead(supportUsers, tmsTicket.getPriority(),
+						tmsTicket.getId());
 			} else if (tmsTicket.getPriority().equalsIgnoreCase("P3")
 					&& minutesDifference == ESCALATION_DIFFERENCE_FOURTY) {
-				sendMessageToSupportLead(supportUsers, tmsTicket.getPriority(), tmsTicket.getId());
+				sendMessageToSupportLead(supportUsers, tmsTicket.getPriority(),
+						tmsTicket.getId());
 			} else if (tmsTicket.getPriority().equalsIgnoreCase("P4")
 					&& minutesDifference == ESCALATION_DIFFERENCE_FIFTY_FIVE) {
-				sendMessageToSupportLead(supportUsers, tmsTicket.getPriority(), tmsTicket.getId());
+				sendMessageToSupportLead(supportUsers, tmsTicket.getPriority(),
+						tmsTicket.getId());
 			}
 		}
 	}
-	
+
 	/**
 	 * send message to support-lead roles
+	 * 
 	 * @param supportUsers
 	 * @param ticketPriority
 	 * @param ticketId
@@ -203,15 +215,12 @@ public class ScheduledTasks {
 			if (supportUser.getRole().equalsIgnoreCase("SUPPORT-LEAD")) {
 				logger.info("Message should be sent to the following support member :"
 						+ supportUser.getUserName());
-				String message = MessageFormat
-						.format(environment
-								.getRequiredProperty("tikbiz.message.escalation"),ticketId.toString(),
-								ticketPriority);
-				String url = MessageFormat
-						.format(environment
-								.getRequiredProperty("tikbiz.sms.endpoint"),
-								supportUser.getMobileNumber(),
-								message);
+				String message = MessageFormat.format(environment
+						.getRequiredProperty("tikbiz.message.escalation"),
+						ticketId.toString(), ticketPriority);
+				String url = MessageFormat.format(
+						environment.getRequiredProperty("tikbiz.sms.endpoint"),
+						supportUser.getMobileNumber(), message);
 				try {
 					ResponseEntity<String> response = restTemplate()
 							.getForEntity(url, String.class);

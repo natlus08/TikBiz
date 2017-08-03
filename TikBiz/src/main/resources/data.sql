@@ -1,10 +1,10 @@
 insert into TMS_USER(id, FIRST_NAME, LAST_NAME, PASSWORD, USER_NAME, ROLE, MOBILENUMBER) values(1, 'hameedu', 'sultan', '123456', 'kaderh', 'SUPPORT', '9600074749');
-insert into TMS_USER(id, FIRST_NAME, LAST_NAME, PASSWORD, USER_NAME, ROLE, MOBILENUMBER) values(2, 'vinoth', 'kumar', '123456', 'gurusam', 'SUPPORT', '9600074749');
-insert into TMS_USER(id, FIRST_NAME, LAST_NAME, PASSWORD, USER_NAME, ROLE, MOBILENUMBER) values(3, 'ravi', 'kumar', '123456', 'maruthr', 'SUPPORT', '9600074749');
-insert into TMS_USER(id, FIRST_NAME, LAST_NAME, PASSWORD, USER_NAME, ROLE, MOBILENUMBER) values(4, 'santosh', 'balakrishnan', '123456', 'balaksa', 'SUPPORT', '9600074749');
-insert into TMS_USER(id, FIRST_NAME, LAST_NAME, PASSWORD, USER_NAME, ROLE, MOBILENUMBER) values(5, 'murali', 'manohar', '123456', 'marimum', 'SUPPORT', '9600074749');
-insert into TMS_USER(id, FIRST_NAME, LAST_NAME, PASSWORD, USER_NAME, ROLE, MOBILENUMBER) values(6, 'kumar', 'karthik', '123456', 'karku', 'SUPPORT-LEAD', '9600074749');
-insert into TMS_USER(id, FIRST_NAME, LAST_NAME, PASSWORD, USER_NAME, ROLE, MOBILENUMBER) values(7, 'shanmugam', 'karthikeyan', '123456', 'karsha', 'SUPPORT-MANAGER', '9600074749');
+insert into TMS_USER(id, FIRST_NAME, LAST_NAME, PASSWORD, USER_NAME, ROLE, MOBILENUMBER) values(2, 'vinoth', 'kumar', '123456', 'gurusam', 'SUPPORT', '9843045823');
+insert into TMS_USER(id, FIRST_NAME, LAST_NAME, PASSWORD, USER_NAME, ROLE, MOBILENUMBER) values(3, 'ravi', 'kumar', '123456', 'maruthr', 'SUPPORT', '9952339848');
+insert into TMS_USER(id, FIRST_NAME, LAST_NAME, PASSWORD, USER_NAME, ROLE, MOBILENUMBER) values(4, 'santosh', 'balakrishnan', '123456', 'balaksa', 'SUPPORT', '9894454501');
+insert into TMS_USER(id, FIRST_NAME, LAST_NAME, PASSWORD, USER_NAME, ROLE, MOBILENUMBER) values(5, 'murali', 'manohar', '123456', 'marimum', 'SUPPORT', '9944960655');
+insert into TMS_USER(id, FIRST_NAME, LAST_NAME, PASSWORD, USER_NAME, ROLE, MOBILENUMBER) values(6, 'kumar', 'karthik', '123456', 'karku', 'SUPPORT-LEAD', '9629386895');
+insert into TMS_USER(id, FIRST_NAME, LAST_NAME, PASSWORD, USER_NAME, ROLE, MOBILENUMBER) values(7, 'shanmugam', 'karthikeyan', '123456', 'karsha', 'SUPPORT-MANAGER', '9894241833');
 insert into TMS_USER(id, FIRST_NAME, LAST_NAME, PASSWORD, USER_NAME, ROLE, MOBILENUMBER) values(8, 'velan', 'vetri', '123456', 'vetve', 'USER', '9600074749');
 insert into TMS_USER(id, FIRST_NAME, LAST_NAME, PASSWORD, USER_NAME, ROLE, MOBILENUMBER) values(9, 'daniel', 'jack', '123456', 'jacda', 'USER', '9600074749');
 

@@ -27,15 +27,16 @@ public class ShiftServiceImpl implements ShiftService{
 	@Autowired
 	private ShiftRoasterRepository shiftRoasterRepository;
 	
-	Pageable seven = new PageRequest(0, 7);
+	private static int maxRecord = 7;
+	
+	Pageable seven = new PageRequest(0, maxRecord);
+	
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 	@Override
 	public Map<String, Map<Date, String>> getShifts(Date date)
 			throws TikBizException {
 		Map<String, Map<Date, String>> employeeShift = new TreeMap<String, Map<Date, String>>();
-//		try {
-//			Date start = sdf.parse("2017-07-31");
 			List<ShiftRoaster> shifts = shiftRoasterRepository.findByDateGreaterThanEqual(date, seven);
 			List<TMSUser> supportUsers = tmsUserRepository.findByRole("SUPPORT");
 			for (TMSUser tmsUser : supportUsers) {
@@ -51,11 +52,6 @@ public class ShiftServiceImpl implements ShiftService{
 				}
 				employeeShift.put(tmsUser.getFirstName(),shiftSchedule);
 			}
-		
-//		}
-//		catch (ParseException e) {
-//			throw new TikBizException("ParseException");
-//		}
 		return employeeShift;
 	}
 	

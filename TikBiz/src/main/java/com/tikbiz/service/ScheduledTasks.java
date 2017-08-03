@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import com.tikbiz.model.ShiftRoaster;
@@ -51,9 +52,32 @@ public class ScheduledTasks {
 
 	@Autowired
 	private Environment environment;
+	
+	static final int MAX_RECORD = 7;
+	
+	static final int SHIFT_START_REMINDER_DIFFERENCE = 4;
+	
+	static final int ESCALATION_DIFFERENCE_TEN = 10;
+	
+	static final int ESCALATION_DIFFERENCE_TWENTY_FIVE = 25;
+	
+	static final int ESCALATION_DIFFERENCE_FOURTY = 40;
+	
+	static final int ESCALATION_DIFFERENCE_FIFTY_FIVE = 55;
+	
+	static final int THOUSAND = 1000;
+	
+	static final int SIXTY = 60;
 
-	Pageable seven = new PageRequest(0, 7);
+	Pageable seven = new PageRequest(0, MAX_RECORD);
+	
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	
+	// format current date
+	SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd");
+
+	// format current time
+	SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss");
 
 	public static final Logger logger = LoggerFactory
 			.getLogger(ScheduledTasks.class);
@@ -63,25 +87,16 @@ public class ScheduledTasks {
 
 		// Current Date
 		Date currentDate = new Date();
-
-		// format current date
-		SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd");
-
-		// format current time
-		SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss");
-
 		List<ShiftRoaster> shifts = shiftRoasterRepository
 				.findByDateGreaterThanEqual(currentDate, seven);
 		// Get a list of support users
 		List<TMSUser> supportUsers = tmsUserRepository.findByRole("SUPPORT");
-
 		// Messages should go when current time is 4 hours before of shiftTime
 		for (TMSUser tmsUser : supportUsers) {
 			for (ShiftRoaster shiftRoaster : shifts) {
 				// compare current date with DB date
 				if (dateFormatter.format(currentDate).equalsIgnoreCase(
 						dateFormatter.format(shiftRoaster.getDate()))) {
-
 					Map<ShiftType, String> shift = shiftRoaster.getShifts();
 					for (Map.Entry<ShiftType, String> entry : shift.entrySet()) {
 						String shiftTime = null;
@@ -109,7 +124,7 @@ public class ScheduledTasks {
 							float difference = currentDateTime.getTime()
 									- timeFormatter.parse(shiftTime).getTime();
 
-							if (difference == 4) {
+							if (difference == SHIFT_START_REMINDER_DIFFERENCE) {
 								logger.info("Message should be sent to the following support member :"
 										+ tmsUser.getUserName());
 								// Code to send Message
@@ -122,7 +137,8 @@ public class ScheduledTasks {
 								try {
 									ResponseEntity<String> response = restTemplate()
 											.getForEntity(url, String.class);
-								} catch (Exception exception) {
+									logger.debug(response.toString());
+								} catch (RestClientException exception) {
 									logger.info("Formed URL is:" + url);
 									logger.error("Exception while sending message"
 											+ exception.getMessage());
@@ -136,8 +152,19 @@ public class ScheduledTasks {
 
 		// Send a Escalation Message when ticket status is not changed in 15
 		// minutes
+		escalationFlow(currentDate, supportUsers);
+	}
+	
+	/**
+	 * Send a Escalation Message when ticket status is not changed in 15 minutes
+	 * 
+	 * @param currentDate
+	 * @param supportUsers
+	 * @throws ParseException
+	 */
+	private void escalationFlow(Date currentDate,List<TMSUser> supportUsers)
+			throws ParseException {
 		List<TMSTicket> tmsTicketList = tmsTicketRepository.findByStatus("NEW");
-
 		for (TMSTicket tmsTicket : tmsTicketList) {
 
 			Date createdDateTime = timeFormatter.parse(new SimpleDateFormat(
@@ -145,24 +172,30 @@ public class ScheduledTasks {
 
 			float timeDifference = currentDate.getTime()
 					- createdDateTime.getTime();
-			int minutesDifference = (int) ((timeDifference / (1000 * 60)) % 60);
+			int minutesDifference = (int) ((timeDifference / (THOUSAND * SIXTY)) % SIXTY);
 
 			if (tmsTicket.getPriority().equalsIgnoreCase("P1")
-					&& minutesDifference == 10) {
+					&& minutesDifference == ESCALATION_DIFFERENCE_TEN) {
 				sendMessageToSupportLead(supportUsers, tmsTicket.getPriority(), tmsTicket.getId());
 			} else if (tmsTicket.getPriority().equalsIgnoreCase("P2")
-					&& minutesDifference == 25) {
+					&& minutesDifference == ESCALATION_DIFFERENCE_TWENTY_FIVE) {
 				sendMessageToSupportLead(supportUsers, tmsTicket.getPriority(), tmsTicket.getId());
 			} else if (tmsTicket.getPriority().equalsIgnoreCase("P3")
-					&& minutesDifference == 40) {
+					&& minutesDifference == ESCALATION_DIFFERENCE_FOURTY) {
 				sendMessageToSupportLead(supportUsers, tmsTicket.getPriority(), tmsTicket.getId());
 			} else if (tmsTicket.getPriority().equalsIgnoreCase("P4")
-					&& minutesDifference == 55) {
+					&& minutesDifference == ESCALATION_DIFFERENCE_FIFTY_FIVE) {
 				sendMessageToSupportLead(supportUsers, tmsTicket.getPriority(), tmsTicket.getId());
 			}
 		}
 	}
-
+	
+	/**
+	 * send message to support-lead roles
+	 * @param supportUsers
+	 * @param ticketPriority
+	 * @param ticketId
+	 */
 	public void sendMessageToSupportLead(List<TMSUser> supportUsers,
 			String ticketPriority, Long ticketId) {
 
@@ -183,8 +216,7 @@ public class ScheduledTasks {
 					ResponseEntity<String> response = restTemplate()
 							.getForEntity(url, String.class);
 					logger.info(url, response.getStatusCode());
-					;
-				} catch (Exception exception) {
+				} catch (RestClientException exception) {
 					logger.error("Exception while sending message"
 							+ exception.getMessage());
 				}

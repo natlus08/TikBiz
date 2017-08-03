@@ -135,11 +135,11 @@ public class TMSTicket implements Serializable{
 		this.createdDate = createdDate;
 	}
 
-	public Date getModifyDate() {
+	public Date getModifiedDate() {
 		return modifiedDate;
 	}
 
-	public void setModifyDate(Date modifiedDate) {
+	public void setModifiedDate(Date modifiedDate) {
 		this.modifiedDate = modifiedDate;
 	}
 	

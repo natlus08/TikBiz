@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import com.tikbiz.exception.TikBizException;
@@ -30,9 +31,6 @@ public class TMSServiceImpl implements TMSService {
 
 	@Autowired
 	private TMSTicketRepository tmsTicketRepository;
-
-	@Autowired
-	private ShiftService shiftService;
 
 	@Bean
 	public RestTemplate restTemplate() {
@@ -107,8 +105,9 @@ public class TMSServiceImpl implements TMSService {
 					existingUser.getMobileNumber(), message);
 			try {
 				response = restTemplate().getForEntity(url, String.class);
-			} catch (Exception exception) {
-				logger.info("Formed URL is:" + url);
+				logger.debug("Formed URL is:" + response.toString());
+			} catch (RestClientException exception) {
+				logger.error("Formed URL is:" + url);
 				logger.error("Exception while sending message"
 						+ exception.getMessage());
 			}
@@ -122,8 +121,8 @@ public class TMSServiceImpl implements TMSService {
 								tmsUser.getMobileNumber(), message);
 						response = restTemplate().getForEntity(url,
 								String.class);
-					} catch (Exception exception) {
-						logger.info("Formed URL is:" + url);
+					} catch (RestClientException exception) {
+						logger.error("Formed URL is:" + url);
 						logger.error("Exception while sending message"
 								+ exception.getMessage());
 					}
@@ -144,13 +143,14 @@ public class TMSServiceImpl implements TMSService {
 
 	@Override
 	public TMSTicket editCustomer(TMSTicket ticket) throws TikBizException {
+		TMSTicket updatedTicket = null;
 		if (tmsTicketRepository.exists(ticket.getId())) {
-			ticket = tmsTicketRepository.save(ticket);
+			updatedTicket = tmsTicketRepository.save(ticket);
 		} else {
 			throw new TikBizException("Unable to Update. Customer with id "
 					+ ticket.getId() + " not found.");
 		}
-		return ticket;
+		return updatedTicket;
 	}
 
 	@Override

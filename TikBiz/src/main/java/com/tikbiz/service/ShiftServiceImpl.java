@@ -27,9 +27,9 @@ public class ShiftServiceImpl implements ShiftService{
 	@Autowired
 	private ShiftRoasterRepository shiftRoasterRepository;
 	
-	private static int maxRecord = 7;
+	static final int MAX_RECORD = 7;
 	
-	Pageable seven = new PageRequest(0, maxRecord);
+	Pageable seven = new PageRequest(0, MAX_RECORD);
 	
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 

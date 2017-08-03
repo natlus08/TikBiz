@@ -72,8 +72,8 @@ public class TMSRestController {
 	 */
 	@PutMapping("/updateticket")
 	public ResponseEntity<?> update(@RequestBody TMSTicket ticket) throws TikBizException {
-		ticket = tmsService.editCustomer(ticket);
-		return new ResponseEntity<TMSTicket>(ticket, HttpStatus.OK);
+		TMSTicket updatedTicket = tmsService.editCustomer(ticket);
+		return new ResponseEntity<TMSTicket>(updatedTicket, HttpStatus.OK);
 	}
 	
 	/**

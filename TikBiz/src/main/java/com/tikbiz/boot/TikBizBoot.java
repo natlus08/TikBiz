@@ -18,7 +18,6 @@ public class TikBizBoot {
 	 */
 	public static void main(String[] args) {
 		SpringApplication.run(TikBizBoot.class, args);
-
 	}
 
 }

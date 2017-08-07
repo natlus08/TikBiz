@@ -48,11 +48,10 @@ tikbiz:
        shiftstart: Your Shift is about to start in 4 hours from now, Thanks.
        escalation: Ticket-{0} raised at Priority level {1} is not yet looked into, please provide necessary support.
        userticket: Ticket-{0} of priority {1} has been created.
-       supportticket: 
     sms:
        endpoint: https://www.smsgatewayhub.com/api/mt/SendSMS?APIKey=8Dza5VhlaE2KvN7n1l59NA&senderid=TESTIN&channel=2&DCS=0&flashsms=0&number={0}&text={1}&route=11
-    #proxy: proxy.cognizant.com
-    #port: 6050
-    proxy: proxyhawc-brm-b.ops.tiaa-cref.org
-    port: 8080
+    proxy: proxy.cognizant.com
+    port: 6050
+    #proxy: proxyhawc-brm-b.ops.tiaa-cref.org
+    #port: 8080
 

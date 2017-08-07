@@ -1,7 +1,5 @@
 package com.tikbiz.service;
 
-import java.net.InetSocketAddress;
-import java.net.Proxy;
 import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,12 +12,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -48,33 +44,27 @@ public class ScheduledTasks {
 	@Autowired
 	private TMSTicketRepository tmsTicketRepository;
 
-	@Bean
-	public RestTemplate restTemplate() {
-		 SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
-		 InetSocketAddress address = new InetSocketAddress(environment.getProperty("tikbiz.proxy"),Integer.parseInt(environment.getProperty("tikbiz.port")));
-		 Proxy proxy = new Proxy(Proxy.Type.HTTP,address);
-		 factory.setProxy(proxy);
-		 return new RestTemplate(factory);
-	}
-
 	@Autowired
 	private Environment environment;
+	
+	@Autowired
+	private RestTemplate restTemplate;
 
-	final int MAX_RECORD = 7;
+	static final int MAX_RECORD = 7;
 
-	final int SHIFT_START_REMINDER_DIFFERENCE = 4;
+	static final int SHIFT_START_REMINDER_DIFFERENCE = 4;
 
-	final int ESCALATION_DIFFERENCE_TEN = 10;
+	static final int ESCALATION_DIFFERENCE_TEN = 10;
 
-	final int ESCALATION_DIFFERENCE_TWENTY_FIVE = 25;
+	static final int ESCALATION_DIFFERENCE_TWENTY_FIVE = 25;
 
-	final int ESCALATION_DIFFERENCE_FOURTY = 40;
+	static final int ESCALATION_DIFFERENCE_FOURTY = 40;
 
-	final int ESCALATION_DIFFERENCE_FIFTY_FIVE = 55;
+	static final int ESCALATION_DIFFERENCE_FIFTY_FIVE = 55;
 
-	final int THOUSAND = 1000;
+	static final int THOUSAND = 1000;
 
-	final int SIXTY = 60;
+	static final int SIXTY = 60;
 
 	Pageable seven = new PageRequest(0, MAX_RECORD);
 
@@ -142,8 +132,7 @@ public class ScheduledTasks {
 												environment
 														.getRequiredProperty("tikbiz.message.shiftstart"));
 								try {
-									ResponseEntity<String> response = restTemplate()
-											.getForEntity(url, String.class);
+									ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
 									logger.debug(response.toString());
 								} catch (RestClientException exception) {
 									logger.info("Formed URL is:" + url);
@@ -222,8 +211,7 @@ public class ScheduledTasks {
 						environment.getRequiredProperty("tikbiz.sms.endpoint"),
 						supportUser.getMobileNumber(), message);
 				try {
-					ResponseEntity<String> response = restTemplate()
-							.getForEntity(url, String.class);
+					ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
 					logger.info(url, response.getStatusCode());
 				} catch (RestClientException exception) {
 					logger.error("Exception while sending message"

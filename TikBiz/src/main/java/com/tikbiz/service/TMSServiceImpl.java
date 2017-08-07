@@ -1,7 +1,5 @@
 package com.tikbiz.service;
 
-import java.net.InetSocketAddress;
-import java.net.Proxy;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,10 +7,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -35,17 +31,11 @@ public class TMSServiceImpl implements TMSService {
 	@Autowired
 	private TMSTicketRepository tmsTicketRepository;
 
-	@Bean
-	public RestTemplate restTemplate() {
-		SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
-		InetSocketAddress address = new InetSocketAddress(environment.getProperty("tikbiz.proxy"),Integer.parseInt(environment.getProperty("tikbiz.port")));
-		Proxy proxy = new Proxy(Proxy.Type.HTTP,address);
-		factory.setProxy(proxy);
-		return new RestTemplate(factory);
-	}
-
 	@Autowired
 	private Environment environment;
+	
+	@Autowired
+	private RestTemplate restTemplate;
 
 	@Override
 	public TMSUser login(TMSUser user) throws TikBizException {
@@ -110,7 +100,7 @@ public class TMSServiceImpl implements TMSService {
 					environment.getRequiredProperty("tikbiz.sms.endpoint"),
 					existingUser.getMobileNumber(), message);
 			try {
-				response = restTemplate().getForEntity(url, String.class);
+				response = restTemplate.getForEntity(url, String.class);
 				logger.debug("Formed URL is:" + response.toString());
 			} catch (RestClientException exception) {
 				logger.error("Formed URL is:" + url);
@@ -125,7 +115,7 @@ public class TMSServiceImpl implements TMSService {
 						url = MessageFormat.format(environment
 								.getRequiredProperty("tikbiz.sms.endpoint"),
 								tmsUser.getMobileNumber(), message);
-						response = restTemplate().getForEntity(url,
+						response = restTemplate.getForEntity(url,
 								String.class);
 					} catch (RestClientException exception) {
 						logger.error("Formed URL is:" + url);

@@ -83,7 +83,12 @@
 				            <tr>
 				                <th>ID</th>
 				                <th>DESCRIPTION</th>
-				                <th>STATUS</th>
+				                <th><a ng-click="tmscontroller.sortType = 'status'; tmscontroller.sortReverse = !tmscontroller.sortReverse">
+            							STATUS
+            							<span ng-show="tmscontroller.sortType == 'status' && !tmscontroller.sortReverse" class="glyphicon glyphicon-arrow-up"></span>
+							            <span ng-show="tmscontroller.sortType == 'status' && tmscontroller.sortReverse" class="glyphicon glyphicon-arrow-down"></span>
+							        </a>
+							    </th>
 				                <th>PRIORITY</th>
 				                <th>CREATED BY</th>
 				                <th>MODIFIED BY</th>
@@ -92,7 +97,7 @@
 				            </tr>
 				            </thead>
 				            <tbody>
-				            <tr ng-repeat="u in tmscontroller.getAllTickets() | orderBy:'id'">
+				            <tr ng-repeat="u in tmscontroller.tickets.slice(((tmscontroller.currentPage-1)*tmscontroller.itemsPerPage), ((tmscontroller.currentPage)*tmscontroller.itemsPerPage)) | orderBy:tmscontroller.sortType:tmscontroller.sortReverse">
 				                <td>{{u.id}}</td>
 				                <td>{{u.description}}</td>
 				                <td>{{u.status}}</td>
@@ -103,7 +108,19 @@
 				                <td ng-if="u.status != 'CLOSED'"><button type="button" ng-click="tmscontroller.editTicket(u.id)" class="btn btn-success custom-width">Edit</button></td>
 				            </tr>
 				            </tbody>
-				        </table>		
+				        </table>
+				        <div>
+				        	<div class="floatLeft">
+				        		View <select name="viewby" id="viewby" ng-model="tmscontroller.viewby" ng-change="tmscontroller.setItemsPerPage(tmscontroller.viewby)">
+						        	<option value="3">3</option>
+						        	<option value="5">5</option>
+						        	<option value="10">10</option>
+				        		</select> records at a time.
+				        	</div>
+				        	<div>
+				        		<pagination page="tmscontroller.currentPage" total-items="tmscontroller.totalItems" on-select-page="tmscontroller.pageChanged(page)" class="pagination-sm center-block" items-per-page="tmscontroller.itemsPerPage"></pagination>
+				        	</div>
+				        </div>
 					</div>
 				</div>
 		    </div>

@@ -1,4 +1,4 @@
-var tmsapp = angular.module('tmsapp',['ui.router','ngStorage']);
+var tmsapp = angular.module('tmsapp',['ui.router','ngStorage','ui.bootstrap']);
 
 tmsapp.constant('urls', {
     BASE: 'http://localhost:8080/tikbiz',

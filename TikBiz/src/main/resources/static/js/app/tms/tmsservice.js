@@ -66,7 +66,6 @@ angular.module('tmsapp').factory('tmsservice',
                 $http.post(urls.API+'createticket', ticket)
                     .then(
                         function (response) {
-                            loadAllTickets();
                             deferred.resolve(response.data);
                         },
                         function (errResponse) {
@@ -81,7 +80,6 @@ angular.module('tmsapp').factory('tmsservice',
                 $http.put(urls.API+'updateticket', ticket)
                     .then(
                         function (response) {
-                        	loadAllTickets();
                             deferred.resolve(response.data);
                         },
                         function (errResponse) {

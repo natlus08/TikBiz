@@ -15,7 +15,6 @@ angular.module('tmsapp').controller('tmscontroller',
         self.prepareDashboard = prepareDashboard;
         self.getMessage = getMessage;
         self.submitTicketForm = submitTicketForm;
-        self.getAllTickets = getAllTickets;
         self.editTicket = editTicket;
         self.reset = reset;
 
@@ -25,6 +24,8 @@ angular.module('tmsapp').controller('tmscontroller',
         self.onlyIntegers = /^\d+$/;
         
         self.validateTicketForm = false;
+        
+        self.viewby = '5';
 
         function login() {
         	tmsservice.login(self.user)
@@ -73,7 +74,8 @@ angular.module('tmsapp').controller('tmscontroller',
         
         function prepareDashboard(){
         	self.user = tmsservice.getUser();
-        	tmsservice.loadAllTickets();
+        	listTickets();
+        	
         }
         
         function getMessage(){
@@ -105,6 +107,7 @@ angular.module('tmsapp').controller('tmscontroller',
                         self.errorMessage='';
                         self.ticket={};
                         $scope.ticketForm.$setPristine();
+                        listTickets();
                     },
                     function (errResponse) {
                         self.errorMessage = 'Error while creating Ticket : ' + errResponse.data.errorMessage;
@@ -121,16 +124,13 @@ angular.module('tmsapp').controller('tmscontroller',
                         self.successMessage='Ticket updated successfully';
                         self.errorMessage='';
                         $scope.ticketForm.$setPristine();
+                        listTickets();
                     },
                     function(errResponse){
                         self.errorMessage='Error while updating Ticket - '+errResponse.data.errorMessage;
                         self.successMessage='';
                     }
                 );
-        }
-        
-        function getAllTickets(){
-            return tmsservice.getAllTickets();
         }
         
         function editTicket(id) {
@@ -145,6 +145,40 @@ angular.module('tmsapp').controller('tmscontroller',
                 }
             );
         }
+        
+        function listTickets(){
+        	tmsservice.loadAllTickets().then(
+                function (response) {
+                    self.tickets = tmsservice.getAllTickets();
+                    
+                    //pagination parameters
+                    self.totalItems = self.tickets.length;
+                    self.currentPage = 1;
+                    self.itemsPerPage =  self.viewby;
+                    self.maxSize = 5; //Number of pager buttons to show
+                },
+                function (errResponse) {
+                	
+                }
+            );
+        }
+        
+        //pagination code - begins
+        self.setPage = function (pageNo) {
+        	 self.currentPage = pageNo;
+        };
+
+        self.setItemsPerPage = function(num) {
+        	 self.itemsPerPage = num;
+        	 self.currentPage = 1; //reset to first paghe
+        }
+        //pagination code - ends
+        
+        //sorting - starts
+        self.sortType = 'id';
+        self.sortReverse = false;
+        self.searchWord = ''; 
+        //sorting - ends 
     }
 
     ]);
